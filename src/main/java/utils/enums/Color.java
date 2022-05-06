@@ -24,7 +24,7 @@ public enum Color {
     LightPurple("&d"),
     LightGold("&e"),
     White("&f");
-    private String colorStr;
+    private final String colorStr;
 
     Color(String colorStr) {
         this.colorStr = colorStr;

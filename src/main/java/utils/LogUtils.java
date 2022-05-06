@@ -1,7 +1,10 @@
 package utils;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
 import org.junit.jupiter.api.Test;
 import utils.enums.Color;
 
@@ -9,33 +12,61 @@ import utils.enums.Color;
  * @author Raven
  * @date 2022/05/05 16:57
  */
+@Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class LogUtils {
-    private ConsoleCommandSender commandSender;
     private Class object;
-
+    private ConsoleCommandSender commandSender;
     /**
      * 打印info日志，默认颜色为白色
-     * @param msg
+     * @param msg 信息
      */
     public void info(String msg){
-        log(msg,Color.White.getColorStr());
+        logToConsole(msg,Color.White.getColorStr());
+    }
+
+    /**
+     * 向玩家打印info日志，默认颜色为白色
+     * @param msg 信息
+     * @param player 玩家对象
+     */
+    public void info(String msg, Player player){
+        logToUser(msg,Color.White.getColorStr(),player);
     }
 
     /**
      * 打印debug日志，默认颜色为绿色
-     * @param msg
+     * @param msg 信息
      */
     public void debug(String msg){
-        log(msg,Color.Green.getColorStr());
+        logToConsole(msg,Color.Green.getColorStr());
+    }
+
+    /**
+     * 向玩家打印debug日志，默认颜色为绿色
+     * @param msg 信息
+     * @param player 玩家对象
+     */
+    public void debug(String msg, Player player){
+        logToUser(msg,Color.Green.getColorStr(),player);
     }
 
     /**
      * 打印错误日志，默认颜色为红色
-     * @param msg
+     * @param msg 信息
      */
     public void error(String msg){
-        log(msg,Color.Red.getColorStr());
+        logToConsole(msg,Color.Red.getColorStr());
+    }
+
+    /**
+     * 向玩家打印error日志，默认颜色为红色
+     * @param msg 信息
+     * @param player 玩家对象
+     */
+    public void error(String msg, Player player){
+        logToUser(msg,Color.Red.getColorStr(),player);
     }
 
     /**
@@ -43,8 +74,19 @@ public class LogUtils {
      * @param msgExtra 字符数据
      * @param color Color枚举参数
      */
-    private void log(String msgExtra,String color){
+    private void logToConsole(String msgExtra, String color){
         String msg = ColorUtils.getColorStr("&6[&b"+object.getName()+"&6]==>"+color+msgExtra);
         commandSender.sendMessage(msg);
+    }
+
+    /**
+     * 向玩家发送log日志
+     * @param msgExtra 信息字符串
+     * @param color Color美剧参数
+     * @param player 玩家对象
+     */
+    private void logToUser(String msgExtra, String color, Player player){
+        String msg = ColorUtils.getColorStr("&6[&b"+object.getName()+"&6]==>"+color+msgExtra);
+        player.sendMessage(msg);
     }
 }

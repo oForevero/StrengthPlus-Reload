@@ -2,11 +2,21 @@
 strength-level:
   1:
     # 对应普通强化石花费个数
-    normalstone: 1
+    normalStone: 1
+    loseLevel: false
+    break: false
   2:
     # 对应强化石花费个数
-    normalstone: 2
+    normalStone: 2
+    loseLevel: true
+    break: false
+  3:
+    # 对应强化石花费个数
+    normalStone: 3
+    loseLevel: true
+    break: true
 # 对应强化几率，对应上面的个数
 strength-chance:
   - 100
   - 90
+  - 80
