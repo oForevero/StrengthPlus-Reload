@@ -3,8 +3,10 @@ strength-level:
   1:
     # 对应普通强化石花费个数
     normalstone: 1
-
-# 对应强化几率
+  2:
+    # 对应强化石花费个数
+    normalstone: 2
+# 对应强化几率，对应上面的个数
 strength-chance:
   - 100
   - 90
