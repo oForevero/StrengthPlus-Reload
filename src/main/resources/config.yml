@@ -6,9 +6,9 @@ strengthplus:
   # 通知
   notify:
     #成功时通知
-    success:
+    success: '强化成功'
     #失败时通知
-    fail:
+    fail: '强化失败'
 damage:
   # 单手剑伤害强化倍率
   swoad: 1.5
