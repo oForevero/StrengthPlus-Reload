@@ -12,10 +12,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DamageConfig {
-    private double swordDamage;
-    private double bowDamage;
-    private double crossBowDamage;
-    private double minDamage;
-    private double maxDamage;
+public class StrengthConfig {
+
 }

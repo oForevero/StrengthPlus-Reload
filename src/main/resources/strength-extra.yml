@@ -1,0 +1,10 @@
+# 对应等级
+strength-level:
+  1:
+    # 对应普通强化石花费个数
+    normalstone: 1
+
+# 对应强化几率
+strength-chance:
+  - 100
+  - 90

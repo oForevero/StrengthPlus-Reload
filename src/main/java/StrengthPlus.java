@@ -18,7 +18,7 @@ public class StrengthPlus extends JavaPlugin {
      */
     @Override
     public void onEnable() {
-
+        
     }
 
     /**

@@ -1,8 +1,14 @@
 strengthplus:
   # 是否允许调试模式
   debug: true
-  #标题
+  # 标题
   title: StrengthPlus
+  # 通知
+  notify:
+    #成功时通知
+    success:
+    #失败时通知
+    fail:
 damage:
   # 单手剑伤害强化倍率
   swoad: 1.5
@@ -10,5 +16,10 @@ damage:
   bow: 1.5
   # 弩箭伤害强化倍率
   crossbow: 1.2
+defence:
+  # 一级护甲带来的伤害减免
+  armor: 0.5
+  # 最小造成伤害
+  mindamage: 1
 
 

@@ -1,0 +1,44 @@
+# 强化石类别，仅可改动参数
+strength-stone:
+  # 普通强化石
+  normal-stone:
+    name: '普通强化石'
+    lore:
+      - '仅用于普通强化的强化石'
+      - 'demo for test'
+    # 是否为保护强化，必定成功强化，管理员强化
+    isSafe: false
+    # 是否为必定成功强化
+    isSuccess: false
+    # 是否为管理员强化
+    isAdmin: false
+  safe-stone:
+    name: '保护强化石'
+    lore:
+      - '用于使强化物品不破碎的强化'
+    # 是否为保护强化，必定成功强化，管理员强化
+    isSafe: true
+    # 是否为必定成功强化
+    isSuccess: false
+    # 是否为管理员强化
+    isAdmin: false
+  success-stone:
+    name: '必定成功强化石'
+    lore:
+      - '用于强化物品，本次强化必定成功'
+    # 是否为保护强化，必定成功强化，管理员强化
+    isSafe: false
+    # 是否为必定成功强化
+    isSuccess: true
+    # 是否为管理员强化
+    isAdmin: false
+  admin-stone:
+    name: '管理员强化石'
+    lore:
+      - '用于强化物品，直接强化到满级'
+    # 是否为保护强化，必定成功强化，管理员强化
+    isSafe: false
+    # 是否为必定成功强化
+    isSuccess: false
+    # 是否为管理员强化
+    isAdmin: true
