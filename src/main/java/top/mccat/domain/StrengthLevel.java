@@ -1,4 +1,4 @@
-package domain;
+package top.mccat.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

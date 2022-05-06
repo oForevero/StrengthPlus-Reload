@@ -1,9 +1,11 @@
-import com.sun.corba.se.impl.activation.CommandHandler;
+package top.mccat;
+
 import com.sun.istack.internal.NotNull;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
-import utils.LogUtils;
+import top.mccat.enums.Permission;
+import top.mccat.utils.LogUtils;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -55,13 +57,21 @@ public class StrengthPlus extends JavaPlugin {
      */
     private final String[] subUserCommands = {"normal", "safe", "success"};
     private final String[] subCommands = {"normal", "safe", "success", "admin", "reload", "normalstone", "safestone", "successstone"};
+
+    /**
+     * tab联想指令
+     * @param sender
+     * @param command
+     * @param alias
+     * @param args
+     * @return
+     */
     @Override
-    public @Nullable
-    List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
         if (args.length > 1) {
             return new ArrayList<>();
         }
-        if(sender.hasPermission(CommandHandler.ADMIN_PERMISSION)){
+        if(sender.hasPermission(Permission.Admin.getPermission()) || sender.isOp()){
             if (args.length == 0) {
                 return Arrays.asList(subCommands);
             }
@@ -73,7 +83,11 @@ public class StrengthPlus extends JavaPlugin {
         return Arrays.stream(subUserCommands).filter(s -> s.startsWith(args[0])).collect(Collectors.toList());
     }
 
-    public void consoleLog(Integer i){
+    /**
+     * 执行log方法，默认封装到主类中
+     * @param i 代表执行参数
+     */
+    public void consoleLog(Integer i, String msg){
 
     }
 }

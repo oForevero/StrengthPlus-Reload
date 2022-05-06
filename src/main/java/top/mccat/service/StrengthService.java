@@ -1,4 +1,4 @@
-package service;
+package top.mccat.service;
 
 /**
  * @author Raven

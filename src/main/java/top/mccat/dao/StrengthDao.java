@@ -1,4 +1,4 @@
-package dao;
+package top.mccat.dao;
 
 /**
  * @author Raven

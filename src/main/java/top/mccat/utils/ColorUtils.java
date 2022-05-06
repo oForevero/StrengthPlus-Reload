@@ -1,4 +1,4 @@
-package utils;
+package top.mccat.utils;
 
 import net.md_5.bungee.api.ChatColor;
 

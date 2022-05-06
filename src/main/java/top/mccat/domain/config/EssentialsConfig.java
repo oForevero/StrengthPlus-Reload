@@ -1,10 +1,10 @@
-package domain.config;
+package top.mccat.domain.config;
 
-import domain.StrengthLevel;
-import domain.StrengthStone;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import top.mccat.domain.StrengthLevel;
+import top.mccat.domain.StrengthStone;
 
 import java.util.List;
 

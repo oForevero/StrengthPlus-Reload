@@ -1,12 +1,12 @@
-package utils;
+package top.mccat.utils;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-import org.junit.jupiter.api.Test;
-import utils.enums.Color;
+import top.mccat.enums.Color;
+import top.mccat.utils.ColorUtils;
 
 /**
  * @author Raven
@@ -23,7 +23,7 @@ public class LogUtils {
      * @param msg 信息
      */
     public void info(String msg){
-        logToConsole(msg,Color.White.getColorStr());
+        logToConsole(msg, Color.White.getColorStr());
     }
 
     /**

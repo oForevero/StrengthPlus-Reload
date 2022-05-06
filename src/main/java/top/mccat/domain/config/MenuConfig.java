@@ -1,4 +1,4 @@
-package domain.config;
+package top.mccat.domain.config;
 
 /**
  * @author Raven

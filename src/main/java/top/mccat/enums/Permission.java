@@ -1,4 +1,4 @@
-package utils.enums;
+package top.mccat.enums;
 
 /**
  * @author Raven
@@ -14,8 +14,8 @@ public enum Permission {
     AdminStrength("strengthPlus.admin.strength",true),
     StrengthPlusReload("strengthPlus.admin.reload",true),
     //以下为角色权限，user对应非admin权限，admin对应所有权限
-    User("StrengthPlus.User",false),
-    Admin("StrengthPlus.Admin",true)
+    User("top.mccat.StrengthPlus.User",false),
+    Admin("top.mccat.StrengthPlus.Admin",true)
     ;
 
     private final String permission;

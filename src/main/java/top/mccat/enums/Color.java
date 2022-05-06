@@ -1,4 +1,4 @@
-package utils.enums;
+package top.mccat.enums;
 
 /**
  * @author Raven

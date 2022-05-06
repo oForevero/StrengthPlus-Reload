@@ -2,7 +2,7 @@ strengthPlus:
   # 是否允许调试模式
   debug: true
   # 标题
-  title: StrengthPlus
+  title: top.mccat.StrengthPlus
   # 通知
   notify:
     #成功时通知

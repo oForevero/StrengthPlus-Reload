@@ -1,4 +1,4 @@
-package handler;
+package top.mccat.handler;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
