@@ -18,6 +18,9 @@ import top.mccat.utils.ColorUtils;
 public class LogUtils {
     private Class object;
     private ConsoleCommandSender commandSender;
+    public static final Integer INFO_LEVEL = 0;
+    public static final Integer DEBUG_LEVEL = 1;
+    public static final Integer ERROR_LEVEL = 2;
     /**
      * 打印info日志，默认颜色为白色
      * @param msg 信息
@@ -82,7 +85,7 @@ public class LogUtils {
     /**
      * 向玩家发送log日志
      * @param msgExtra 信息字符串
-     * @param color Color美剧参数
+     * @param color Color枚举参数
      * @param player 玩家对象
      */
     private void logToUser(String msgExtra, String color, Player player){

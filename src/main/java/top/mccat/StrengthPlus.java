@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
  */
 public class StrengthPlus extends JavaPlugin {
     private final LogUtils utils = new LogUtils(StrengthPlus.class,null);
+
     /**
      * 被spigot读取的方法
      */
@@ -60,10 +61,10 @@ public class StrengthPlus extends JavaPlugin {
 
     /**
      * tab联想指令
-     * @param sender
-     * @param command
+     * @param sender 指令发送者
+     * @param command 指令
      * @param alias
-     * @param args
+     * @param args 字指令联想
      * @return
      */
     @Override
@@ -88,6 +89,12 @@ public class StrengthPlus extends JavaPlugin {
      * @param i 代表执行参数
      */
     public void consoleLog(Integer i, String msg){
-
+        if(i.equals(LogUtils.INFO_LEVEL)){
+            utils.info(msg);
+        }else if (i.equals(LogUtils.DEBUG_LEVEL)){
+            utils.debug(msg);
+        }else if(i.equals(LogUtils.ERROR_LEVEL)){
+            utils.error(msg);
+        }
     }
 }
