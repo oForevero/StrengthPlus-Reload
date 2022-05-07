@@ -16,25 +16,50 @@ import java.io.IOException;
  */
 public class ConfigFactory {
     private final StrengthPlus plugin;
-    private final EssentialsConfig essentialsConfig;
     private final FileConfiguration fileConfiguration = new YamlConfiguration();
-    public ConfigFactory(StrengthPlus plugin, EssentialsConfig essentialsConfig){
+    /**
+     * 对应配置文件
+     */
+    private final File config;
+    private final File strengthExtra;
+    private final File strengthItem;
+    private final File strengthStone;
+    public static final String PLUGIN_VERSION = "2.1-Alpha";
+    public ConfigFactory(StrengthPlus plugin){
         this.plugin = plugin;
-        this.essentialsConfig = essentialsConfig;
+        File dataFolder = plugin.getDataFolder();
+        config = new File(dataFolder,"config.yml");
+        strengthExtra = new File(dataFolder,"strength-extra.yml");
+        strengthItem = new File(dataFolder,"strength-item.yml");
+        strengthStone = new File(dataFolder,"strength-stone.yml");
     }
 
-    public void initFile(){
-        File dataFolder = plugin.getDataFolder();
+    /**
+     * 将yml写入plugin文件夹的io方法
+     */
+    public void readConfigFile(){
         try {
-            fileConfiguration.load(new File(dataFolder,"config.yml"));
-            fileConfiguration.load(new File(dataFolder,"strength-extra.yml"));
-            fileConfiguration.load(new File(dataFolder,"strength-item.yml"));
-            fileConfiguration.load(new File(dataFolder,"strength-stone.yml"));
+            fileConfiguration.load(config);
+            fileConfiguration.load(strengthExtra);
+            fileConfiguration.load(strengthItem);
+            fileConfiguration.load(strengthStone);
         } catch (IOException e) {
-            e.printStackTrace();
+            plugin.consoleLog(2,"插件io读取错误，插件加载失败！");
+            writeConfigFile();
         } catch (InvalidConfigurationException e) {
-            e.printStackTrace();
-            plugin.consoleLog(0,"");
+            plugin.consoleLog(1,"配置文件不存在，正在生成配置文件.....");
+            plugin.saveDefaultConfig();
+            writeConfigFile();
         }
+    }
+
+    /**
+     * 从插件中写入yml文件到插件文件夹中
+     */
+    public void writeConfigFile(){
+        plugin.saveResource("config.yml",false);
+        plugin.saveResource("strength-extra.yml",false);
+        plugin.saveResource("strength-item.yml",false);
+        plugin.saveResource("strength-stone.yml",false);
     }
 }
