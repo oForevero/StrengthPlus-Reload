@@ -15,4 +15,5 @@ public class StrengthLevel {
     private Integer normalStoneCost;
     private boolean loseLevel;
     private boolean breakItem;
+    private Integer strengthChance;
 }

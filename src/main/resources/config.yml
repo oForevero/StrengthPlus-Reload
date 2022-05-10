@@ -2,7 +2,11 @@ strengthPlus:
   # 是否允许调试模式
   debug: true
   # 标题
-  title: top.mccat.StrengthPlus
+  title: '&b[强化等级]'
+  # 分割线长度
+  divider: '----------------'
+  # 等级标识（单一等级标签）
+  levelIcon: '※'
   # 通知
   notify:
     #成功时通知
@@ -10,9 +14,9 @@ strengthPlus:
     #失败时通知
     fail: '强化失败'
   broadcast:
-    success: '恭喜%player%将他的装备强化到%level%级'
-    safe: '很遗憾，%player%在将他的装备强化到%level%级的时候强化炉发生了爆炸，好在装备保护强化券保护了装备没有被摧毁！'
-    fail: '很遗憾，%player%在将他的装备强化到%level%级的时候强化炉发生了爆炸，装备被摧毁了！'
+    success: '&2恭喜%player%将他的装备强化到%level%级'
+    safe: '&5很遗憾，%player%在将他的装备强化到%level%级的时候强化炉发生了爆炸，好在装备保护强化券保护了装备没有被摧毁！'
+    fail: '&4很遗憾，%player%在将他的装备强化到%level%级的时候强化炉发生了爆炸，装备被摧毁了！'
 damage:
   # 单手剑伤害强化倍率
   swoad: 1.5

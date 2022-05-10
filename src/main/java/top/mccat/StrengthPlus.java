@@ -3,9 +3,11 @@ package top.mccat;
 import com.sun.istack.internal.NotNull;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import top.mccat.enums.Permission;
 import top.mccat.factory.ConfigFactory;
+import top.mccat.utils.ColorUtils;
 import top.mccat.utils.LogUtils;
 
 import javax.annotation.Nullable;
@@ -21,13 +23,17 @@ import java.util.stream.Collectors;
 public class StrengthPlus extends JavaPlugin {
     private final LogUtils utils = new LogUtils(StrengthPlus.class,null);
     private final ConfigFactory configFactory = new ConfigFactory(this);
+    private ConsoleCommandSender consoleSender;
+
     /**
      * 被spigot读取的方法
      */
     @Override
     public void onLoad() {
+        consoleSender = this.getServer().getConsoleSender();
         //获取console的打印日志实体
-        utils.setCommandSender(this.getServer().getConsoleSender());
+        utils.setCommandSender(consoleSender);
+        authorMenu(this);
     }
 
     /**
@@ -51,7 +57,7 @@ public class StrengthPlus extends JavaPlugin {
      */
     @Override
     public void reloadConfig() {
-
+        configFactory.readConfigFile();
     }
 
     /**
@@ -90,6 +96,9 @@ public class StrengthPlus extends JavaPlugin {
      * @param i 代表执行参数
      */
     public void consoleLog(Integer i, String msg){
+        if(!configFactory.isDebugStatus()){
+            return;
+        }
         if(i.equals(LogUtils.INFO_LEVEL)){
             utils.info(msg);
         }else if (i.equals(LogUtils.DEBUG_LEVEL)){
@@ -101,9 +110,23 @@ public class StrengthPlus extends JavaPlugin {
 
     @Override
     public void saveDefaultConfig() {
-        super.saveDefaultConfig();
-        if (!this.configFile.exists()) {
-            this.saveResource("config.yml", false);
-        }
+        configFactory.writeConfigFile();
+    }
+
+    public void consoleMsg(String msg){
+        consoleSender.sendMessage(ColorUtils.getColorStr(msg));
+    }
+
+    /**
+     * 作者信息menu
+     * @param plugin javaPlugin.
+     */
+    private void authorMenu(StrengthPlus plugin){
+        consoleMsg("&4&l===----------&6&l[StrengthPlus]&4&l-----------===");
+        consoleMsg("&a      插件版本&b"+ConfigFactory.PLUGIN_VERSION);
+        consoleMsg("&b      制作者： Raven       ");
+        consoleMsg("&b      QQ ： 740585947     ");
+        consoleMsg("&b如有bug可以加我反馈也可以在bbs论坛下留言，蟹蟹！");
+        consoleMsg("&4&l===----------&6&l[StrengthPlus]&4&l-----------===");
     }
 }

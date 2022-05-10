@@ -17,8 +17,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EssentialsConfig {
-    private boolean debug;
     private String title;
+    private String divider;
+    private String levelIcon;
     private String successNotify;
     private String failNotify;
     private String successBroadcast;
