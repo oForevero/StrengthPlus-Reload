@@ -16,6 +16,16 @@ public class ObjectParseUtils {
     }
 
     /**
+     * 将object转换为 double
+     * @param object object对象
+     * @return double数据
+     * @throws Exception
+     */
+    public static Double doubleParse(Object object) throws Exception{
+        return Double.parseDouble(object.toString());
+    }
+
+    /**
      * 将object转换为 boolean
      * @param object object对象
      * @return Boolean 对象

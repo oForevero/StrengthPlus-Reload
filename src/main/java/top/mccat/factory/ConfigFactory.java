@@ -54,7 +54,7 @@ public class ConfigFactory {
     public void readConfigFile(){
         try {
             fileConfiguration.load(config);
-
+            reloadEssentialsConfig();
             fileConfiguration.load(strengthLevelFile);
             reloadStrengthLevel();
             fileConfiguration.load(strengthItemFile);
@@ -112,6 +112,26 @@ public class ConfigFactory {
         essentialsConfig.setSuccessBroadcast(broadcast.get(0).toString());
         essentialsConfig.setSafeBroadcast(broadcast.get(1).toString());
         essentialsConfig.setFailBroadcast(broadcast.get(2).toString());
+        List<?> damage = strengthPlus.getList("damage");
+        if(damage==null){
+            plugin.consoleLog(2, "错误，config.yml下的damage数据不存在或文件不存在！");
+            return;
+        }
+        List<?> defence = strengthPlus.getList("defence");
+        if(defence==null){
+            plugin.consoleLog(2, "错误，config.yml下的defence数据不存在或文件不存在！");
+            return;
+        }
+        try {
+            essentialsConfig.setSwordDamage(ObjectParseUtils.doubleParse(damage.get(0)));
+            essentialsConfig.setBowDamage(ObjectParseUtils.doubleParse(damage.get(1)));
+            essentialsConfig.setCrossBowDamage(ObjectParseUtils.doubleParse(damage.get(2)));
+            essentialsConfig.setArmorDefence(ObjectParseUtils.doubleParse(defence.get(0)));
+            essentialsConfig.setMinDamage(ObjectParseUtils.doubleParse(defence.get(1)));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        plugin.consoleLog(1,essentialsConfig);
     }
 
     /**
@@ -129,13 +149,14 @@ public class ConfigFactory {
                 StrengthLevel strengthLevel = new StrengthLevel();
                 strengthLevel.setNormalStoneCost(ObjectParseUtils.integerParse(levelMap.get("normalStone")));
                 strengthLevel.setStrengthChance(ObjectParseUtils.integerParse(levelMap.get("chance")));
-                strengthLevel.setLoseLevel(ObjectParseUtils.booleanParse(levelMap.get("")));
+                strengthLevel.setLoseLevel(ObjectParseUtils.booleanParse(levelMap.get("loseLevel")));
                 strengthLevel.setBreakItem(ObjectParseUtils.booleanParse(levelMap.get("break")));
                 strengthLevels.add(strengthLevel);
             } catch (Exception e) {
                 plugin.consoleLog(2,"错误！strength-level配置文件读取错误！");
             }
         }
+        plugin.consoleLog(1,strengthLevels);
     }
 
     public List<StrengthLevel> getStrengthLevel() {

@@ -108,6 +108,25 @@ public class StrengthPlus extends JavaPlugin {
         }
     }
 
+    /**
+     * 执行log方法，默认封装到主类中
+     * @param i 代表执行参数
+     * @param o 对象参数
+     */
+    public void consoleLog(Integer i, Object o){
+        if(!configFactory.isDebugStatus()){
+            return;
+        }
+        String msg = o.toString();
+        if(i.equals(LogUtils.INFO_LEVEL)){
+            utils.info(msg);
+        }else if (i.equals(LogUtils.DEBUG_LEVEL)){
+            utils.debug(msg);
+        }else if(i.equals(LogUtils.ERROR_LEVEL)){
+            utils.error(msg);
+        }
+    }
+
     @Override
     public void saveDefaultConfig() {
         configFactory.writeConfigFile();
