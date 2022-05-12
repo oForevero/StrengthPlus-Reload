@@ -8,6 +8,8 @@ import top.mccat.StrengthPlus;
 import top.mccat.domain.StrengthLevel;
 import top.mccat.domain.StrengthStone;
 import top.mccat.domain.config.EssentialsConfig;
+import top.mccat.enums.YamlConfigMessage;
+import top.mccat.exception.ConfigFileNotFoundException;
 import top.mccat.utils.ObjectParseUtils;
 
 import java.io.File;
@@ -37,7 +39,7 @@ public class ConfigFactory {
     private final List<StrengthLevel> strengthLevels = new ArrayList<>();
     private final StrengthStone strengthStone = new StrengthStone();
     private final EssentialsConfig essentialsConfig = new EssentialsConfig();
-    private boolean debugStatus;
+    private boolean debugStatus = false;
     public static final String PLUGIN_VERSION = "2.1-Alpha";
     public ConfigFactory(StrengthPlus plugin){
         this.plugin = plugin;
@@ -66,6 +68,8 @@ public class ConfigFactory {
             plugin.consoleLog(1,"正在读取默认配置文件......");
             readConfigFile();
             plugin.consoleLog(1,"读取默认配置文件成功！");
+        } catch (ConfigFileNotFoundException e){
+
         }
     }
 
@@ -87,11 +91,11 @@ public class ConfigFactory {
     /**
      * 加载基础配置文件
      */
-    public void reloadEssentialsConfig(){
+    private void reloadEssentialsConfig() throws ConfigFileNotFoundException {
         ConfigurationSection strengthPlus = fileConfiguration.getConfigurationSection("strengthPlus");
         if(strengthPlus==null){
-            plugin.consoleLog(2, "错误，config.yml下的strengthPlus数据不存在或文件不存在！");
-            return;
+            plugin.consoleLog(YamlConfigMessage.ConfigStrengthPlusLoadError.getLevelCode(), YamlConfigMessage.ConfigStrengthPlusLoadError.getMessage());
+            throw new ConfigFileNotFoundException(YamlConfigMessage.ConfigStrengthPlusLoadError.getMessage());
         }
         debugStatus = strengthPlus.getBoolean("debug");
         essentialsConfig.setTitle(strengthPlus.getString("title"));
@@ -99,15 +103,15 @@ public class ConfigFactory {
         essentialsConfig.setLevelIcon("levelIcon");
         List<?> notify = strengthPlus.getList("notify");
         if(notify==null){
-            plugin.consoleLog(2, "错误，config.yml下的notify数据不存在或文件不存在！");
-            return;
+            plugin.consoleLog(YamlConfigMessage.ConfigNotifyLoadError.getLevelCode(), YamlConfigMessage.ConfigNotifyLoadError.getMessage());
+            throw new ConfigFileNotFoundException(YamlConfigMessage.ConfigNotifyLoadError.getMessage());
         }
         essentialsConfig.setSuccessNotify(notify.get(0).toString());
         essentialsConfig.setFailNotify(notify.get(1).toString());
         List<?> broadcast = strengthPlus.getList("broadcast");
         if(broadcast==null){
-            plugin.consoleLog(2, "错误，config.yml下的broadcast数据不存在或文件不存在！");
-            return;
+            plugin.consoleLog(YamlConfigMessage.ConfigBroadcastLoadError.getLevelCode(), YamlConfigMessage.ConfigBroadcastLoadError.getMessage());
+            throw new ConfigFileNotFoundException(YamlConfigMessage.ConfigBroadcastLoadError.getMessage());
         }
         essentialsConfig.setSuccessBroadcast(broadcast.get(0).toString());
         essentialsConfig.setSafeBroadcast(broadcast.get(1).toString());
@@ -129,7 +133,7 @@ public class ConfigFactory {
             essentialsConfig.setArmorDefence(ObjectParseUtils.doubleParse(defence.get(0)));
             essentialsConfig.setMinDamage(ObjectParseUtils.doubleParse(defence.get(1)));
         } catch (Exception e) {
-            e.printStackTrace();
+            plugin.consoleLog(2,"错误！config配置文件读取错误！");
         }
         plugin.consoleLog(1,essentialsConfig);
     }
@@ -137,8 +141,8 @@ public class ConfigFactory {
     /**
      * 读取强化等级配置文件
      */
-    public void reloadStrengthLevel(){
-        ConfigurationSection levelConfig = fileConfiguration.getConfigurationSection("strength_level");
+    private void reloadStrengthLevel(){
+        ConfigurationSection levelConfig = fileConfiguration.getConfigurationSection("strength-level");
         if (levelConfig == null){
             plugin.consoleLog(2, "错误，strength-level.yml下的strength_level数据不存在或文件不存在！");
             return;
@@ -157,6 +161,14 @@ public class ConfigFactory {
             }
         }
         plugin.consoleLog(1,strengthLevels);
+    }
+
+    private void reloadStrengthStone(){
+        ConfigurationSection strengthStone = fileConfiguration.getConfigurationSection("strength-stone");
+        if(strengthStone==null){
+            plugin.consoleLog(2,"");
+            return;
+        }
     }
 
     public List<StrengthLevel> getStrengthLevel() {
