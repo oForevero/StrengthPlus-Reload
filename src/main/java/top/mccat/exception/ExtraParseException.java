@@ -2,7 +2,7 @@ package top.mccat.exception;
 
 /**
  * @author Distance
- * @date
+ * @date @date 2022/05/12 16:54
  */
 public class ExtraParseException extends Exception{
 
