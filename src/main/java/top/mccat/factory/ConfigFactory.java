@@ -118,13 +118,13 @@ public class ConfigFactory {
         essentialsConfig.setFailBroadcast(broadcast.get(2).toString());
         List<?> damage = strengthPlus.getList("damage");
         if(damage==null){
-            plugin.consoleLog(2, "错误，config.yml下的damage数据不存在或文件不存在！");
-            return;
+            plugin.consoleLog(YamlConfigMessage.ConfigDamageLoadError.getLevelCode(), YamlConfigMessage.ConfigDamageLoadError.getMessage());
+            throw new ConfigFileNotFoundException(YamlConfigMessage.ConfigDamageLoadError.getMessage());
         }
         List<?> defence = strengthPlus.getList("defence");
         if(defence==null){
-            plugin.consoleLog(2, "错误，config.yml下的defence数据不存在或文件不存在！");
-            return;
+            plugin.consoleLog(YamlConfigMessage.ConfigDefenceLoadError.getLevelCode(), YamlConfigMessage.ConfigDefenceLoadError.getMessage());
+            throw new ConfigFileNotFoundException(YamlConfigMessage.ConfigDefenceLoadError.getMessage());
         }
         try {
             essentialsConfig.setSwordDamage(ObjectParseUtils.doubleParse(damage.get(0)));
@@ -133,7 +133,7 @@ public class ConfigFactory {
             essentialsConfig.setArmorDefence(ObjectParseUtils.doubleParse(defence.get(0)));
             essentialsConfig.setMinDamage(ObjectParseUtils.doubleParse(defence.get(1)));
         } catch (Exception e) {
-            plugin.consoleLog(2,"错误！config配置文件读取错误！");
+            plugin.consoleLog(2,"错误！数据转换失败，请确认数据格式正确！");
         }
         plugin.consoleLog(1,essentialsConfig);
     }
