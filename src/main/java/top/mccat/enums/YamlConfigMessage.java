@@ -12,6 +12,18 @@ public enum YamlConfigMessage {
     ConfigBroadcastLoadError(2,"错误，config.yml下的broadcast数据不存在或文件不存在！"),
     ConfigDamageLoadError(2,"错误，config.yml下的damage数据不存在或文件不存在！"),
     ConfigDefenceLoadError(2,"错误，config.yml下的defence数据不存在或文件不存在！"),
+    /**
+     * 对应strength-level下的strength-level参数信息
+     */
+    ConfigStrengthLevelLoadError(2,"错误，strength-level.yml下的strength_level数据不存在或文件不存在！"),
+    /**
+     * 对应strength-stone下的error级别的信息
+     */
+    ConfigStrengthStoneLoadError(2,"错误，strength-stone.yml下的strength_stone数据不存在或文件不存在！"),
+    /**
+     * 对应strength-item下的strength-item参数信息
+     */
+    ConfigStrengthItemLoadError(2,"错误，strength-item.yml下的strength_item数据不存在或文件不存在！")
     ;
 
     private int levelCode;

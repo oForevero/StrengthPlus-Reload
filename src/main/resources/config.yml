@@ -1,6 +1,6 @@
 strengthPlus:
   # 是否允许调试模式
-  debug: true
+  debug: false
   # 标题
   title: '&b[强化等级]'
   # 分割线长度
