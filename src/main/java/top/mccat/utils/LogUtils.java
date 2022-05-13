@@ -1,26 +1,28 @@
 package top.mccat.utils;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import top.mccat.enums.Color;
-import top.mccat.utils.ColorUtils;
 
 /**
  * @author Raven
  * @date 2022/05/05 16:57
  */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class LogUtils {
-    private Class object;
+    private Object object;
     private ConsoleCommandSender commandSender;
     public static final Integer INFO_LEVEL = 0;
     public static final Integer DEBUG_LEVEL = 1;
     public static final Integer ERROR_LEVEL = 2;
+
+    public LogUtils() {
+    }
+
+    public LogUtils(Object object, ConsoleCommandSender commandSender) {
+        this.object = object;
+        this.commandSender = commandSender;
+    }
+
     /**
      * 打印info日志，默认颜色为白色
      * @param msg 信息
@@ -78,7 +80,7 @@ public class LogUtils {
      * @param color Color枚举参数
      */
     private void logToConsole(String msgExtra, String color){
-        String msg = ColorUtils.getColorStr("&6[&b"+object.getName()+"&6]==>"+color+msgExtra);
+        String msg = ColorUtils.getColorStr("&6[&b"+object.getClass().getName()+"&6]==>"+color+msgExtra);
         commandSender.sendMessage(msg);
     }
 
@@ -89,7 +91,11 @@ public class LogUtils {
      * @param player 玩家对象
      */
     private void logToUser(String msgExtra, String color, Player player){
-        String msg = ColorUtils.getColorStr("&6[&b"+object.getName()+"&6]==>"+color+msgExtra);
+        String msg = ColorUtils.getColorStr("&6[&b"+object.getClass().getName()+"&6]==>"+color+msgExtra);
         player.sendMessage(msg);
+    }
+
+    public void setCommandSender(ConsoleCommandSender commandSender) {
+        this.commandSender = commandSender;
     }
 }

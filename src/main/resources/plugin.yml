@@ -1,7 +1,7 @@
 name: strengthPlus
 main: top.mccat.StrengthPlus
 version: 2.1-Alpha
-api-version: 1.18.2
+api-version: 1.18
 commands:
   sp:
     description: "strengthPlus command"

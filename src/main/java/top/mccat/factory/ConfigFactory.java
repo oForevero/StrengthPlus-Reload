@@ -18,6 +18,7 @@ import top.mccat.utils.ObjectParseUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,9 +40,9 @@ public class ConfigFactory {
     /**
      * 实体参数对象
      */
-    private final List<StrengthLevel> strengthLevels = new ArrayList<>();
     private final StrengthStone strengthStone = new StrengthStone();
     private final EssentialsConfig essentialsConfig = new EssentialsConfig();
+    private List<StrengthLevel> strengthLevels = new ArrayList<>();
     private List<String> strengthItems = new ArrayList<>();
     private boolean debugStatus = false;
     public static final String PLUGIN_VERSION = "2.1-Alpha";
@@ -64,7 +65,9 @@ public class ConfigFactory {
             fileConfiguration.load(strengthLevelFile);
             reloadStrengthLevel();
             fileConfiguration.load(strengthItemFile);
+            reloadStrengthItem();
             fileConfiguration.load(strengthStoneFile);
+            reloadStrengthStone();
         } catch (IOException | InvalidConfigurationException e) {
             plugin.consoleLog(2,"配置文件IO读取错误，正在重新生成配置文件！");
             plugin.consoleLog(1,"正在写入默认配置文件......");
@@ -100,10 +103,11 @@ public class ConfigFactory {
         essentialsConfig.setTitle(strengthPlus.getString("title"));
         essentialsConfig.setDivider("divider");
         essentialsConfig.setLevelIcon("levelIcon");
-        List<?> notify = strengthPlus.getList("notify");
-        if(notify==null){
-            plugin.consoleLog(YamlConfigMessage.ConfigNotifyLoadError);
-            throw new ConfigValueNotFoundException(YamlConfigMessage.ConfigNotifyLoadError.getMessage());
+        List<String> notify= strengthPlus.getStringList("notify");
+            if(notify==null){
+
+                plugin.consoleLog(YamlConfigMessage.ConfigNotifyLoadError);
+                throw new ConfigValueNotFoundException(YamlConfigMessage.ConfigNotifyLoadError.getMessage());
         }
         essentialsConfig.setSuccessNotify(notify.get(0).toString());
         essentialsConfig.setFailNotify(notify.get(1).toString());
@@ -141,6 +145,7 @@ public class ConfigFactory {
      * 读取强化等级配置文件
      */
     private void reloadStrengthLevel() throws ConfigValueNotFoundException {
+        strengthLevels = null;
         ConfigurationSection levelConfig = fileConfiguration.getConfigurationSection("strength-level");
         if (levelConfig == null){
             plugin.consoleLog(YamlConfigMessage.ConfigStrengthLevelLoadError);
@@ -177,6 +182,7 @@ public class ConfigFactory {
     }
 
     private void reloadStrengthItem() throws ConfigValueNotFoundException {
+        strengthItems = null;
         ConfigurationSection strengthItem = fileConfiguration.getConfigurationSection("strength-item");
         if(strengthItem==null){
             plugin.consoleLog(YamlConfigMessage.ConfigStrengthItemLoadError);

@@ -35,6 +35,7 @@ public class StrengthPlus extends JavaPlugin {
         //获取console的打印日志实体
         utils.setCommandSender(consoleSender);
         authorMenu(this);
+        configFactory.readConfigFile();
     }
 
     /**
@@ -71,9 +72,9 @@ public class StrengthPlus extends JavaPlugin {
      * tab联想指令
      * @param sender 指令发送者
      * @param command 指令
-     * @param alias
+     * @param alias 子联想
      * @param args 字指令联想
-     * @return
+     * @return 联想列表
      */
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
@@ -132,7 +133,7 @@ public class StrengthPlus extends JavaPlugin {
         if(!configFactory.isDebugStatus()){
             return;
         }
-        String msg = "["+o.getClass().getName()+ "]==>"+ o.toString();
+        String msg = "["+o.getClass().getName()+ "]==>"+ o;
         if(level.equals(LogUtils.INFO_LEVEL)){
             utils.info(msg);
         }else if (level.equals(LogUtils.DEBUG_LEVEL)){
