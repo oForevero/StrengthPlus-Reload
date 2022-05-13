@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import top.mccat.enums.Permission;
+import top.mccat.enums.YamlConfigMessage;
 import top.mccat.factory.ConfigFactory;
 import top.mccat.utils.ColorUtils;
 import top.mccat.utils.LogUtils;
@@ -93,36 +94,50 @@ public class StrengthPlus extends JavaPlugin {
 
     /**
      * 执行log方法，默认封装到主类中
-     * @param i 代表执行参数
+     * @param level 代表执行参数
+     * @param msg 消息参数
      */
-    public void consoleLog(Integer i, String msg){
+    public void consoleLog(Integer level, String msg){
         if(!configFactory.isDebugStatus()){
             return;
         }
-        if(i.equals(LogUtils.INFO_LEVEL)){
+        if(level.equals(LogUtils.INFO_LEVEL)){
             utils.info(msg);
-        }else if (i.equals(LogUtils.DEBUG_LEVEL)){
+        }else if (level.equals(LogUtils.DEBUG_LEVEL)){
             utils.debug(msg);
-        }else if(i.equals(LogUtils.ERROR_LEVEL)){
+        }else if(level.equals(LogUtils.ERROR_LEVEL)){
             utils.error(msg);
         }
     }
 
     /**
-     * 执行log方法，默认封装到主类中
-     * @param i 代表执行参数
-     * @param o 对象参数
+     * 直接通过枚举打印日志
+     * @param yamlConfigMessage 枚举对象
      */
-    public void consoleLog(Integer i, Object o){
+    public void consoleLog(YamlConfigMessage yamlConfigMessage){
         if(!configFactory.isDebugStatus()){
             return;
         }
-        String msg = o.toString();
-        if(i.equals(LogUtils.INFO_LEVEL)){
+        Integer level = yamlConfigMessage.getLevelCode();
+        String msg = yamlConfigMessage.getMessage();
+        consoleLog(level,msg);
+    }
+
+    /**
+     * 执行log方法，默认封装到主类中，对象会打印对应的对象名log，范例如下[object]==>
+     * @param level 代表执行参数
+     * @param o 对象参数
+     */
+    public void consoleLog(Integer level, Object o){
+        if(!configFactory.isDebugStatus()){
+            return;
+        }
+        String msg = "["+o.getClass().getName()+ "]==>"+ o.toString();
+        if(level.equals(LogUtils.INFO_LEVEL)){
             utils.info(msg);
-        }else if (i.equals(LogUtils.DEBUG_LEVEL)){
+        }else if (level.equals(LogUtils.DEBUG_LEVEL)){
             utils.debug(msg);
-        }else if(i.equals(LogUtils.ERROR_LEVEL)){
+        }else if(level.equals(LogUtils.ERROR_LEVEL)){
             utils.error(msg);
         }
     }

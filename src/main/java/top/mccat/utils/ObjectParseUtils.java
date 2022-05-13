@@ -1,18 +1,25 @@
 package top.mccat.utils;
 
+import top.mccat.exception.ExtraParseException;
+
 /**
  * @author Raven
  * @date 2022/05/10 16:11
  */
 public class ObjectParseUtils {
-
     /**
      * 将object转换为 integer
      * @param object object 对象
      * @return Integer 对象
      */
-    public static Integer integerParse(Object object) throws Exception{
-        return Integer.parseInt(object.toString());
+    public static Integer integerParse(Object object) throws ExtraParseException {
+        int parseInt;
+        try {
+            parseInt = Integer.parseInt(object.toString());
+        } catch (NumberFormatException e) {
+            throw new ExtraParseException();
+        }
+        return parseInt;
     }
 
     /**
@@ -21,8 +28,14 @@ public class ObjectParseUtils {
      * @return double数据
      * @throws Exception
      */
-    public static Double doubleParse(Object object) throws Exception{
-        return Double.parseDouble(object.toString());
+    public static Double doubleParse(Object object) throws ExtraParseException{
+        double parseDouble;
+        try {
+            parseDouble = Double.parseDouble(object.toString());
+        } catch (NumberFormatException e) {
+            throw new ExtraParseException();
+        }
+        return parseDouble;
     }
 
     /**
@@ -30,7 +43,7 @@ public class ObjectParseUtils {
      * @param object object对象
      * @return Boolean 对象
      */
-    public static Boolean booleanParse(Object object) throws Exception{
+    public static Boolean booleanParse(Object object){
         return Boolean.parseBoolean(object.toString());
     }
 }

@@ -3,6 +3,7 @@ package top.mccat.handler;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 /**
  * @author Raven
@@ -11,6 +12,11 @@ import org.bukkit.command.CommandSender;
 public abstract class BaseCommandHandler implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
-        return false;
+        if(commandSender instanceof Player){
+
+        }else {
+
+        }
+        return true;
     }
 }
