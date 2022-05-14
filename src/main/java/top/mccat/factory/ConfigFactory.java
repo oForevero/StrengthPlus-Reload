@@ -103,14 +103,8 @@ public class ConfigFactory {
         essentialsConfig.setTitle(strengthPlus.getString("title"));
         essentialsConfig.setDivider("divider");
         essentialsConfig.setLevelIcon("levelIcon");
-        List<String> notify= strengthPlus.getStringList("notify");
-            if(notify==null){
-
-                plugin.consoleLog(YamlConfigMessage.ConfigNotifyLoadError);
-                throw new ConfigValueNotFoundException(YamlConfigMessage.ConfigNotifyLoadError.getMessage());
-        }
-        essentialsConfig.setSuccessNotify(notify.get(0).toString());
-        essentialsConfig.setFailNotify(notify.get(1).toString());
+        essentialsConfig.setSuccessNotify(strengthPlus.getString("notify.success"));
+        essentialsConfig.setFailNotify(strengthPlus.getString("notify.fail"));
         List<?> broadcast = strengthPlus.getList("broadcast");
         if(broadcast==null){
             plugin.consoleLog(YamlConfigMessage.ConfigBroadcastLoadError);
