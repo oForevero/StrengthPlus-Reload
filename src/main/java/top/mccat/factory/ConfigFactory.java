@@ -17,10 +17,7 @@ import top.mccat.utils.ObjectParseUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Raven
@@ -103,35 +100,36 @@ public class ConfigFactory {
         essentialsConfig.setTitle(strengthPlus.getString("title"));
         essentialsConfig.setDivider("divider");
         essentialsConfig.setLevelIcon("levelIcon");
-        essentialsConfig.setSuccessNotify(strengthPlus.getString("notify.success"));
-        essentialsConfig.setFailNotify(strengthPlus.getString("notify.fail"));
-        List<?> broadcast = strengthPlus.getList("broadcast");
+        ConfigurationSection notify = strengthPlus.getConfigurationSection("notify");
+        if(notify==null){
+            plugin.consoleLog(YamlConfigMessage.ConfigNotifyLoadError);
+            throw new ConfigValueNotFoundException(YamlConfigMessage.ConfigNotifyLoadError.getMessage());
+        }
+        essentialsConfig.setSuccessNotify(notify.getString("success"));
+        essentialsConfig.setFailNotify(notify.getString("fail"));
+        ConfigurationSection broadcast = strengthPlus.getConfigurationSection("broadcast");
         if(broadcast==null){
             plugin.consoleLog(YamlConfigMessage.ConfigBroadcastLoadError);
             throw new ConfigValueNotFoundException(YamlConfigMessage.ConfigBroadcastLoadError.getMessage());
         }
-        essentialsConfig.setSuccessBroadcast(broadcast.get(0).toString());
-        essentialsConfig.setSafeBroadcast(broadcast.get(1).toString());
-        essentialsConfig.setFailBroadcast(broadcast.get(2).toString());
-        List<?> damage = strengthPlus.getList("damage");
+        essentialsConfig.setSuccessBroadcast(broadcast.getString("success"));
+        essentialsConfig.setSafeBroadcast(broadcast.getString("safe"));
+        essentialsConfig.setFailBroadcast(broadcast.getString("fail"));
+        ConfigurationSection damage = strengthPlus.getConfigurationSection("damage");
         if(damage==null){
             plugin.consoleLog(YamlConfigMessage.ConfigDamageLoadError);
             throw new ConfigValueNotFoundException(YamlConfigMessage.ConfigDamageLoadError.getMessage());
         }
-        List<?> defence = strengthPlus.getList("defence");
+        ConfigurationSection defence = strengthPlus.getConfigurationSection("defence");
         if(defence==null){
             plugin.consoleLog(YamlConfigMessage.ConfigDefenceLoadError);
             throw new ConfigValueNotFoundException(YamlConfigMessage.ConfigDefenceLoadError.getMessage());
         }
-        try {
-            essentialsConfig.setSwordDamage(ObjectParseUtils.doubleParse(damage.get(0)));
-            essentialsConfig.setBowDamage(ObjectParseUtils.doubleParse(damage.get(1)));
-            essentialsConfig.setCrossBowDamage(ObjectParseUtils.doubleParse(damage.get(2)));
-            essentialsConfig.setArmorDefence(ObjectParseUtils.doubleParse(defence.get(0)));
-            essentialsConfig.setMinDamage(ObjectParseUtils.doubleParse(defence.get(1)));
-        } catch (ExtraParseException e) {
-            plugin.consoleLog(2,"config.yml下的damage"+e.getMessage());
-        }
+        essentialsConfig.setSwordDamage(damage.getDouble("sword"));
+        essentialsConfig.setBowDamage(damage.getDouble("bow"));
+        essentialsConfig.setCrossBowDamage(damage.getDouble("crossbow"));
+        essentialsConfig.setArmorDefence(defence.getDouble("armorDefence"));
+        essentialsConfig.setMinDamage(defence.getDouble("minDamage"));
         plugin.consoleLog(1,essentialsConfig);
     }
 
@@ -139,20 +137,23 @@ public class ConfigFactory {
      * 读取强化等级配置文件
      */
     private void reloadStrengthLevel() throws ConfigValueNotFoundException {
-        strengthLevels = null;
+        strengthLevels = new ArrayList<>();
         ConfigurationSection levelConfig = fileConfiguration.getConfigurationSection("strength-level");
         if (levelConfig == null){
             plugin.consoleLog(YamlConfigMessage.ConfigStrengthLevelLoadError);
             throw new ConfigValueNotFoundException(YamlConfigMessage.ConfigStrengthLevelLoadError.getMessage());
         }
-        List<Map<?, ?>> mapList = levelConfig.getMapList("strength-level");
-        for (Map<?, ?> levelMap : mapList) {
+        //获取强化等级key和参数
+        Map<String, Object> values = levelConfig.getValues(false);
+        Set<String> keySet = values.keySet();
+        for (String key : keySet) {
+            Map<String, Object> levelExtra = levelConfig.getValues(true);
             try {
                 StrengthLevel strengthLevel = new StrengthLevel();
-                strengthLevel.setNormalStoneCost(ObjectParseUtils.integerParse(levelMap.get("normalStone")));
-                strengthLevel.setStrengthChance(ObjectParseUtils.integerParse(levelMap.get("chance")));
-                strengthLevel.setLoseLevel(ObjectParseUtils.booleanParse(levelMap.get("loseLevel")));
-                strengthLevel.setBreakItem(ObjectParseUtils.booleanParse(levelMap.get("break")));
+                strengthLevel.setNormalStoneCost(ObjectParseUtils.integerParse(levelExtra.get(key+".normalStone")));
+                strengthLevel.setStrengthChance(ObjectParseUtils.integerParse(levelExtra.get(key+".chance")));
+                strengthLevel.setLoseLevel(ObjectParseUtils.booleanParse(levelExtra.get(key+".loseLevel")));
+                strengthLevel.setBreakItem(ObjectParseUtils.booleanParse(levelExtra.get(key+".break")));
                 strengthLevels.add(strengthLevel);
             } catch (ExtraParseException e) {
                 plugin.consoleLog(2,"strength-level.yml下的strength-level"+e.getMessage());
@@ -176,7 +177,7 @@ public class ConfigFactory {
     }
 
     private void reloadStrengthItem() throws ConfigValueNotFoundException {
-        strengthItems = null;
+        strengthItems = new ArrayList<>();
         ConfigurationSection strengthItem = fileConfiguration.getConfigurationSection("strength-item");
         if(strengthItem==null){
             plugin.consoleLog(YamlConfigMessage.ConfigStrengthItemLoadError);

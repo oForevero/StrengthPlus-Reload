@@ -1,6 +1,6 @@
 strengthPlus:
   # 是否允许调试模式
-  debug: tr
+  debug: true
   # 标题
   title: '&b[强化等级]'
   # 分割线长度
@@ -20,7 +20,7 @@ strengthPlus:
   # 伤害参数
   damage:
     # 单手剑伤害强化倍率
-    swoad: 1.5
+    sword: 1.5
     # 弓箭伤害强化倍率
     bow: 1.5
     # 弩箭伤害强化倍率

@@ -51,4 +51,14 @@ public class StrengthLevel {
     public void setStrengthChance(Integer strengthChance) {
         this.strengthChance = strengthChance;
     }
+
+    @Override
+    public String toString() {
+        return "StrengthLevel{" +
+                "normalStoneCost=" + normalStoneCost +
+                ", loseLevel=" + loseLevel +
+                ", breakItem=" + breakItem +
+                ", strengthChance=" + strengthChance +
+                '}';
+    }
 }

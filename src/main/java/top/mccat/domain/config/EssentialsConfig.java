@@ -187,4 +187,27 @@ public class EssentialsConfig {
     public void setStrengthItem(List<String> strengthItem) {
         this.strengthItem = strengthItem;
     }
+
+    @Override
+    public String toString() {
+        return "EssentialsConfig{" +
+                "title='" + title + '\'' +
+                ", divider='" + divider + '\'' +
+                ", levelIcon='" + levelIcon + '\'' +
+                ", successNotify='" + successNotify + '\'' +
+                ", failNotify='" + failNotify + '\'' +
+                ", successBroadcast='" + successBroadcast + '\'' +
+                ", safeBroadcast='" + safeBroadcast + '\'' +
+                ", failBroadcast='" + failBroadcast + '\'' +
+                ", swordDamage=" + swordDamage +
+                ", bowDamage=" + bowDamage +
+                ", crossBowDamage=" + crossBowDamage +
+                ", minDamage=" + minDamage +
+                ", armorDefence=" + armorDefence +
+                ", strengthLevels=" + strengthLevels +
+                ", strengthStones=" + strengthStones +
+                ", strengthLevelChance=" + strengthLevelChance +
+                ", strengthItem=" + strengthItem +
+                '}';
+    }
 }

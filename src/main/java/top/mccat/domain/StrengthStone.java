@@ -64,4 +64,15 @@ public class StrengthStone {
     public void setAdmin(boolean admin) {
         isAdmin = admin;
     }
+
+    @Override
+    public String toString() {
+        return "StrengthStone{" +
+                "stoneName='" + stoneName + '\'' +
+                ", lore=" + lore +
+                ", isSafe=" + isSafe +
+                ", isSuccess=" + isSuccess +
+                ", isAdmin=" + isAdmin +
+                '}';
+    }
 }
