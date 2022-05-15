@@ -11,6 +11,7 @@ public class ObjectParseUtils {
      * 将object转换为 integer
      * @param object object 对象
      * @return Integer 对象
+     * @throws ExtraParseException int参数转换失败
      */
     public static Integer integerParse(Object object) throws ExtraParseException {
         int parseInt;
@@ -26,7 +27,7 @@ public class ObjectParseUtils {
      * 将object转换为 double
      * @param object object对象
      * @return double数据
-     * @throws Exception
+     * @throws ExtraParseException double参数转换失败
      */
     public static Double doubleParse(Object object) throws ExtraParseException{
         double parseDouble;

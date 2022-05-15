@@ -40,6 +40,7 @@ public class ConfigFactory {
     private final StrengthStone strengthStone = new StrengthStone();
     private final EssentialsConfig essentialsConfig = new EssentialsConfig();
     private List<StrengthLevel> strengthLevels = new ArrayList<>();
+    private List<StrengthStone> strengthStones = new ArrayList<>();
     private List<String> strengthItems = new ArrayList<>();
     private boolean debugStatus = false;
     public static final String PLUGIN_VERSION = "2.1-Alpha";
@@ -48,8 +49,8 @@ public class ConfigFactory {
         File dataFolder = plugin.getDataFolder();
         config = new File(dataFolder,"config.yml");
         strengthLevelFile = new File(dataFolder, "strength-level.yml");
-        strengthItemFile = new File(dataFolder,"strength-item.yml");
         strengthStoneFile = new File(dataFolder,"strength-stone.yml");
+        strengthItemFile = new File(dataFolder,"strength-item.yml");
     }
 
     /**
@@ -61,10 +62,11 @@ public class ConfigFactory {
             reloadEssentialsConfig();
             fileConfiguration.load(strengthLevelFile);
             reloadStrengthLevel();
-            fileConfiguration.load(strengthItemFile);
-            reloadStrengthItem();
             fileConfiguration.load(strengthStoneFile);
             reloadStrengthStone();
+            fileConfiguration.load(strengthItemFile);
+            reloadStrengthItem();
+            plugin.consoleLog(1,"配置文件读取成功！");
         } catch (IOException | InvalidConfigurationException e) {
             plugin.consoleLog(2,"配置文件IO读取错误，正在重新生成配置文件！");
             plugin.consoleLog(1,"正在写入默认配置文件......");
@@ -89,6 +91,7 @@ public class ConfigFactory {
 
     /**
      * 加载基础配置文件
+     * @throws ConfigValueNotFoundException 配置文件未找到异常
      */
     private void reloadEssentialsConfig() throws ConfigValueNotFoundException {
         ConfigurationSection strengthPlus = fileConfiguration.getConfigurationSection("strengthPlus");
@@ -135,9 +138,10 @@ public class ConfigFactory {
 
     /**
      * 读取强化等级配置文件
+     * @throws ConfigValueNotFoundException 配置文件未找到异常
      */
     private void reloadStrengthLevel() throws ConfigValueNotFoundException {
-        strengthLevels = new ArrayList<>();
+        strengthLevels.clear();
         ConfigurationSection levelConfig = fileConfiguration.getConfigurationSection("strength-level");
         if (levelConfig == null){
             plugin.consoleLog(YamlConfigMessage.ConfigStrengthLevelLoadError);
@@ -156,37 +160,55 @@ public class ConfigFactory {
                 strengthLevel.setBreakItem(ObjectParseUtils.booleanParse(levelExtra.get(key+".break")));
                 strengthLevels.add(strengthLevel);
             } catch (ExtraParseException e) {
-                plugin.consoleLog(2,"strength-level.yml下的strength-level"+e.getMessage());
+                plugin.consoleLog(2,"strength-level.yml下的等级"+e.getMessage());
             }
         }
         plugin.consoleLog(1,strengthLevels);
     }
 
+    /**
+     * 读取强化石配置文件
+     * @throws ConfigValueNotFoundException 配置文件未找到异常
+     */
     private void reloadStrengthStone() throws ConfigValueNotFoundException {
-        ConfigurationSection strengthStone = fileConfiguration.getConfigurationSection("strength-stone");
-        if(strengthStone==null){
+        strengthStones.clear();
+        ConfigurationSection stoneConfig = fileConfiguration.getConfigurationSection("strength-stone");
+        if(stoneConfig==null){
             plugin.consoleLog(YamlConfigMessage.ConfigStrengthStoneLoadError);
             throw new ConfigValueNotFoundException(YamlConfigMessage.ConfigStrengthStoneLoadError.getMessage());
         }
-        //暂未知道是否成功，故搁置
-        //StrengthStone normalStone = strengthStone.getObject("normal-stone", StrengthStone.class);
-        List<Map<?, ?>> normalStone = strengthStone.getMapList("normal-stone");
-        List<Map<?, ?>> safeStone = strengthStone.getMapList("safe-stone");
-        List<Map<?, ?>> successStone = strengthStone.getMapList("success-stone");
-        List<Map<?, ?>> adminStone = strengthStone.getMapList("admin-stone");
+        //获取强化石key和参数
+        Map<String, Object> values = stoneConfig.getValues(false);
+        Set<String> keySet = values.keySet();
+        for(String key : keySet){
+            StrengthStone strengthStone = new StrengthStone();
+            Map<String, Object> stoneExtra = stoneConfig.getValues(true);
+            strengthStone.setStoneName(stoneExtra.get(key+".name").toString());
+            strengthStone.setLore(stoneConfig.getStringList(key+".lore"));
+            strengthStone.setSafe(ObjectParseUtils.booleanParse(stoneExtra.get(key+".isSafe")));
+            strengthStone.setSuccess(ObjectParseUtils.booleanParse(stoneExtra.get(key+".isSuccess")));
+            strengthStone.setAdmin(ObjectParseUtils.booleanParse(stoneExtra.get(key+".isAdmin")));
+            strengthStones.add(strengthStone);
+        }
+        plugin.consoleLog(1,strengthStones);
     }
 
     private void reloadStrengthItem() throws ConfigValueNotFoundException {
-        strengthItems = new ArrayList<>();
-        ConfigurationSection strengthItem = fileConfiguration.getConfigurationSection("strength-item");
-        if(strengthItem==null){
+        strengthItems.clear();
+        ConfigurationSection strengthConfig = fileConfiguration.getConfigurationSection("strength-item");
+        if(strengthConfig==null) {
             plugin.consoleLog(YamlConfigMessage.ConfigStrengthItemLoadError);
             throw new ConfigValueNotFoundException(YamlConfigMessage.ConfigStrengthItemLoadError.getMessage());
         }
-        List<?> list = strengthItem.getList("strength-item");
-        for(Object o : list){
+        List<?> nameList = strengthConfig.getList("name");
+        if(nameList == null){
+            plugin.consoleLog(YamlConfigMessage.ConfigStrengthItemLoadError);
+            throw new ConfigValueNotFoundException(YamlConfigMessage.ConfigStrengthItemLoadError.getMessage());
+        }
+        for(Object o : nameList){
             strengthItems.add(o.toString());
         }
+        plugin.consoleLog(1,nameList);
     }
 
     public List<StrengthLevel> getStrengthLevel() {
