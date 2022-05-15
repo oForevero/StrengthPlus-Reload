@@ -1,4 +1,5 @@
 #对应可被强化的物品名
 strength-item:
-  - 'BOW'
-  - 'WOODEN_SWORD'
+  name:
+    - 'BOW'
+    - 'WOODEN_SWORD'
