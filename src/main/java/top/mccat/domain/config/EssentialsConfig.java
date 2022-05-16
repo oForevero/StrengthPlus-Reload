@@ -24,20 +24,16 @@ public class EssentialsConfig {
     private double crossBowDamage;
     private double minDamage;
     private double armorDefence;
-    private List<StrengthLevel> strengthLevels;
-    private List<StrengthStone> strengthStones;
-    private List<Integer> strengthLevelChance;
-    private List<String> strengthItem;
 
     public EssentialsConfig() {
     }
 
-    public EssentialsConfig(String title, String divider, String levelIcon, String successNotify, String failNotify, String successBroadcast, String safeBroadcast, String failBroadcast, double swordDamage, double bowDamage, double crossBowDamage, double minDamage, double armorDefence, List<StrengthLevel> strengthLevels, List<StrengthStone> strengthStones, List<Integer> strengthLevelChance, List<String> strengthItem) {
+    public EssentialsConfig(String title, String divider, String levelIcon, String successNotify, String failNotify, String successBroadcast, String safeBroadcast, String failBroadcast, double swordDamage, double bowDamage, double crossBowDamage, double minDamage, double armorDefence) {
         this.title = title;
         this.divider = divider;
-        this.levelIcon = levelIcon;
         this.successNotify = successNotify;
         this.failNotify = failNotify;
+        this.levelIcon = levelIcon;
         this.successBroadcast = successBroadcast;
         this.safeBroadcast = safeBroadcast;
         this.failBroadcast = failBroadcast;
@@ -46,10 +42,6 @@ public class EssentialsConfig {
         this.crossBowDamage = crossBowDamage;
         this.minDamage = minDamage;
         this.armorDefence = armorDefence;
-        this.strengthLevels = strengthLevels;
-        this.strengthStones = strengthStones;
-        this.strengthLevelChance = strengthLevelChance;
-        this.strengthItem = strengthItem;
     }
 
     public String getTitle() {
@@ -156,38 +148,6 @@ public class EssentialsConfig {
         this.armorDefence = armorDefence;
     }
 
-    public List<StrengthLevel> getStrengthLevels() {
-        return strengthLevels;
-    }
-
-    public void setStrengthLevels(List<StrengthLevel> strengthLevels) {
-        this.strengthLevels = strengthLevels;
-    }
-
-    public List<StrengthStone> getStrengthStones() {
-        return strengthStones;
-    }
-
-    public void setStrengthStones(List<StrengthStone> strengthStones) {
-        this.strengthStones = strengthStones;
-    }
-
-    public List<Integer> getStrengthLevelChance() {
-        return strengthLevelChance;
-    }
-
-    public void setStrengthLevelChance(List<Integer> strengthLevelChance) {
-        this.strengthLevelChance = strengthLevelChance;
-    }
-
-    public List<String> getStrengthItem() {
-        return strengthItem;
-    }
-
-    public void setStrengthItem(List<String> strengthItem) {
-        this.strengthItem = strengthItem;
-    }
-
     @Override
     public String toString() {
         return "EssentialsConfig{" +
@@ -204,10 +164,6 @@ public class EssentialsConfig {
                 ", crossBowDamage=" + crossBowDamage +
                 ", minDamage=" + minDamage +
                 ", armorDefence=" + armorDefence +
-                ", strengthLevels=" + strengthLevels +
-                ", strengthStones=" + strengthStones +
-                ", strengthLevelChance=" + strengthLevelChance +
-                ", strengthItem=" + strengthItem +
                 '}';
     }
 }

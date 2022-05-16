@@ -6,7 +6,7 @@ strengthPlus:
   # 分割线长度
   divider: '----------------'
   # 等级标识（单一等级标签）
-  levelIcon: '※'
+  levelIcon: '✡'
   # 通知
   notify:
     #成功时通知

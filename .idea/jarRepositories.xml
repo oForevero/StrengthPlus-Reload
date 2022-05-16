@@ -7,9 +7,24 @@
       <option name="url" value="https://repo.maven.apache.org/maven2" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="central" />
+      <option name="name" value="Central Repositories" />
+      <option name="url" value="https://maven.aliyun.com/repository/public" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="spigot-repo" />
       <option name="name" value="spigot-repo" />
       <option name="url" value="https://hub.spigotmc.org/nexus/content/groups/public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="nexus" />
+      <option name="name" value="Public Repositories" />
+      <option name="url" value="https://maven.aliyun.com/repository/public" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="corn-maven-snapshots" />
+      <option name="name" value="Snapshot Repositories" />
+      <option name="url" value="https://maven.aliyun.com/repository/public" />
     </remote-repository>
     <remote-repository>
       <option name="id" value="central" />
@@ -29,6 +44,11 @@
     <remote-repository>
       <option name="id" value="central" />
       <option name="name" value="Central Repository" />
+      <option name="url" value="https://maven.aliyun.com/repository/public" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="corn-maven-release" />
+      <option name="name" value="Release Repositories" />
       <option name="url" value="https://maven.aliyun.com/repository/public" />
     </remote-repository>
   </component>

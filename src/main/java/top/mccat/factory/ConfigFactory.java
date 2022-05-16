@@ -1,11 +1,10 @@
 package top.mccat.factory;
 
-import org.bukkit.Material;
+import com.sun.istack.internal.NotNull;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.inventory.meta.ItemMeta;
 import top.mccat.StrengthPlus;
 import top.mccat.domain.StrengthLevel;
 import top.mccat.domain.StrengthStone;
@@ -14,10 +13,12 @@ import top.mccat.enums.YamlConfigMessage;
 import top.mccat.exception.ConfigValueNotFoundException;
 import top.mccat.exception.ExtraParseException;
 import top.mccat.utils.ObjectParseUtils;
-
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Raven
@@ -156,8 +157,8 @@ public class ConfigFactory {
                 StrengthLevel strengthLevel = new StrengthLevel();
                 strengthLevel.setNormalStoneCost(ObjectParseUtils.integerParse(levelExtra.get(key+".normalStone")));
                 strengthLevel.setStrengthChance(ObjectParseUtils.integerParse(levelExtra.get(key+".chance")));
-                strengthLevel.setLoseLevel(ObjectParseUtils.booleanParse(levelExtra.get(key+".loseLevel")));
-                strengthLevel.setBreakItem(ObjectParseUtils.booleanParse(levelExtra.get(key+".break")));
+                strengthLevel.setLoseLevel(getBooleanDefaultConfigExtra(levelExtra,key+".loseLevel"));
+                strengthLevel.setBreakItem(getBooleanDefaultConfigExtra(levelExtra,key+".break"));
                 strengthLevels.add(strengthLevel);
             } catch (ExtraParseException e) {
                 plugin.consoleLog(2,"strength-level.yml下的等级"+e.getMessage());
@@ -185,9 +186,9 @@ public class ConfigFactory {
             Map<String, Object> stoneExtra = stoneConfig.getValues(true);
             strengthStone.setStoneName(stoneExtra.get(key+".name").toString());
             strengthStone.setLore(stoneConfig.getStringList(key+".lore"));
-            strengthStone.setSafe(ObjectParseUtils.booleanParse(stoneExtra.get(key+".isSafe")));
-            strengthStone.setSuccess(ObjectParseUtils.booleanParse(stoneExtra.get(key+".isSuccess")));
-            strengthStone.setAdmin(ObjectParseUtils.booleanParse(stoneExtra.get(key+".isAdmin")));
+            strengthStone.setSafe(getBooleanDefaultConfigExtra(stoneExtra,key+".isSafe"));
+            strengthStone.setSuccess(getBooleanDefaultConfigExtra(stoneExtra,key+".isSuccess"));
+            strengthStone.setAdmin(getBooleanDefaultConfigExtra(stoneExtra,key+".isAdmin"));
             strengthStones.add(strengthStone);
         }
         plugin.consoleLog(1,strengthStones);
@@ -209,6 +210,20 @@ public class ConfigFactory {
             strengthItems.add(o.toString());
         }
         plugin.consoleLog(1,nameList);
+    }
+
+    /**
+     * 读取config默认参数，如不存在则设置默认boolean值为false
+     * @param mapExtra map参数
+     * @param key 键值
+     * @return 布尔值
+     */
+    private boolean getBooleanDefaultConfigExtra(@NotNull Map mapExtra, @NotNull String key){
+        if(!mapExtra.containsKey(key)){
+            return false;
+        }else {
+            return ObjectParseUtils.booleanParse(mapExtra.get(key));
+        }
     }
 
     public List<StrengthLevel> getStrengthLevel() {

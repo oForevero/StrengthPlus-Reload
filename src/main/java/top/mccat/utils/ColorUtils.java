@@ -5,6 +5,7 @@ import net.md_5.bungee.api.ChatColor;
 /**
  * @author Raven
  * @date 2022/05/05 20:36
+ * 颜色转换类
  */
 public class ColorUtils {
 

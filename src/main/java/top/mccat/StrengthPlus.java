@@ -10,7 +10,6 @@ import top.mccat.enums.YamlConfigMessage;
 import top.mccat.factory.ConfigFactory;
 import top.mccat.utils.ColorUtils;
 import top.mccat.utils.LogUtils;
-
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,6 +19,7 @@ import java.util.stream.Collectors;
 /**
  * @author Raven
  * @date 2022/05/05 16:05
+ * 主插件启动类
  */
 public class StrengthPlus extends JavaPlugin {
     private final LogUtils utils = new LogUtils(StrengthPlus.class,null);
@@ -129,7 +129,7 @@ public class StrengthPlus extends JavaPlugin {
      * @param level 代表执行参数
      * @param o 对象参数
      */
-    public void consoleLog(Integer level, Object o){
+    public void consoleLog(Integer level, @NotNull Object o){
         if(!configFactory.isDebugStatus()){
             return;
         }
@@ -158,10 +158,10 @@ public class StrengthPlus extends JavaPlugin {
      */
     private void authorMenu(StrengthPlus plugin){
         consoleMsg("&4&l===----------&6&l[StrengthPlus]&4&l-----------===");
-        consoleMsg("&a      插件版本&b"+ConfigFactory.PLUGIN_VERSION);
-        consoleMsg("&b      制作者： Raven       ");
-        consoleMsg("&b      QQ ： 740585947     ");
-        consoleMsg("&b如有bug可以加我反馈也可以在bbs论坛下留言，蟹蟹！");
+        consoleMsg("&a          插件版本：&b"+ConfigFactory.PLUGIN_VERSION);
+        consoleMsg("&b             制作者： Raven       ");
+        consoleMsg("&b             QQ ： 740585947     ");
+        consoleMsg("&b  如有bug可以在bbs论坛下留言反馈，蟹蟹！");
         consoleMsg("&4&l===----------&6&l[StrengthPlus]&4&l-----------===");
     }
 }

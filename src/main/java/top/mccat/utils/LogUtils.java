@@ -7,6 +7,7 @@ import top.mccat.enums.Color;
 /**
  * @author Raven
  * @date 2022/05/05 16:57
+ * plugin日志打印类
  */
 public class LogUtils {
     private Object object;

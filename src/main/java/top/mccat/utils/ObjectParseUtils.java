@@ -5,6 +5,7 @@ import top.mccat.exception.ExtraParseException;
 /**
  * @author Raven
  * @date 2022/05/10 16:11
+ * object转换工具类
  */
 public class ObjectParseUtils {
     /**
