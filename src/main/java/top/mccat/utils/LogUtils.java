@@ -86,22 +86,22 @@ public class LogUtils {
 
     /**
      * log日志打印方法
-     * @param msgExtra 字符数据
+     * @param msgData 字符数据
      * @param color Color枚举参数
      */
-    private void logToConsole(String msgExtra, String color){
-        String msg = ColorUtils.getColorStr("&6[&b"+getCurrentFileName()+"&6]==>"+"&a[&c"+getCurrentLineNum()+"&a]"+color+msgExtra);
+    private void logToConsole(String msgData, String color){
+        String msg = ColorUtils.getColorStr("&6[&b"+getCurrentFileName()+"&6]==>"+"&a[&c"+getCurrentLineNum()+"&a]"+color+msgData);
         commandSender.sendMessage(msg);
     }
 
     /**
      * 向玩家发送log日志
-     * @param msgExtra 信息字符串
+     * @param msgData 信息字符串
      * @param color Color枚举参数
      * @param player 玩家对象
      */
-    private void logToUser(String msgExtra, String color, Player player){
-        String msg = ColorUtils.getColorStr("+object.getClass().getName()+==>"+color+msgExtra);
+    private void logToUser(String msgData, String color, Player player){
+        String msg = ColorUtils.getColorStr("+object.getClass().getName()+==>"+color+msgData);
         player.sendMessage(msg);
     }
 

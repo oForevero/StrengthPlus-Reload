@@ -11,27 +11,35 @@ public interface NotifyService {
     /**
      * 强化成功时执行的通知
      * @param player 玩家对象
+     * @param level 物品等级
      */
-    void strengthSuccessNotify(Player player);
+    void strengthSuccessNotify(Player player, String level);
 
     /**
      * 强化失败时执行的通知
      * @param player 玩家对象
+     * @param level 物品等级
      */
-    void strengthFailNotify(Player player);
+    void strengthFailNotify(Player player, String level);
 
     /**
      * 执行高阶强化成功后的广播
+     * @param player 玩家对象
+     * @param level 物品等级
      */
-    void StrengthSuccessBroadcast();
+    void StrengthSuccessBroadcast(Player player, String level);
 
     /**
      * 执行高阶强化失败但保护后的广播
+     * @param player 玩家对象
+     * @param level 物品等级
      */
-    void StrengthSafeBroadcast();
+    void StrengthSafeBroadcast(Player player, String level);
 
     /**
      * 执行高阶强化失败后的广播
+     * @param player 玩家对象
+     * @param level 物品等级
      */
-    void StrengthFailBroadcast();
+    void StrengthFailBroadcast(Player player, String level);
 }
