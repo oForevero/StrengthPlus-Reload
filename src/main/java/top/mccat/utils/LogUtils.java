@@ -74,9 +74,14 @@ public class LogUtils {
     public void error(String msg, Player player){
         logToUser(msg,Color.Red.getColorStr(),player);
     }
+
+    public String getCurrentFileName(){
+        StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[5];
+        return stackTraceElement.getFileName()+"."+stackTraceElement.getMethodName();
+    }
     
     public int getCurrentLineNum(){
-        return Thread.currentThread().getStackTrace()[1].getLineNumber();
+        return Thread.currentThread().getStackTrace()[5].getLineNumber();
     }
 
     /**
@@ -85,7 +90,7 @@ public class LogUtils {
      * @param color Color枚举参数
      */
     private void logToConsole(String msgExtra, String color){
-        String msg = ColorUtils.getColorStr("&6[&b"+object.getClass().getName()+"&6]==>"+color+msgExtra);
+        String msg = ColorUtils.getColorStr("&6[&b"+getCurrentFileName()+"&6]==>"+"&a[&c"+getCurrentLineNum()+"&a]"+color+msgExtra);
         commandSender.sendMessage(msg);
     }
 
@@ -96,7 +101,7 @@ public class LogUtils {
      * @param player 玩家对象
      */
     private void logToUser(String msgExtra, String color, Player player){
-        String msg = ColorUtils.getColorStr("&6[&b"+object.getClass().getName()+"&6]==>"+color+msgExtra);
+        String msg = ColorUtils.getColorStr("+object.getClass().getName()+==>"+color+msgExtra);
         player.sendMessage(msg);
     }
 

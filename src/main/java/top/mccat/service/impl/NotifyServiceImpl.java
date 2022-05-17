@@ -2,6 +2,8 @@ package top.mccat.service.impl;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import top.mccat.dao.NotifyDao;
+import top.mccat.dao.impl.NotifyDaoImpl;
 import top.mccat.domain.config.EssentialsConfig;
 import top.mccat.service.NotifyService;
 import top.mccat.utils.ColorUtils;
@@ -14,6 +16,7 @@ import top.mccat.utils.ColorUtils;
 public class NotifyServiceImpl implements NotifyService {
     private EssentialsConfig essentialsConfig;
     private CommandSender commandSender;
+    private final NotifyDao notifyDao = new NotifyDaoImpl();
     public NotifyServiceImpl() {
     }
 
@@ -23,6 +26,8 @@ public class NotifyServiceImpl implements NotifyService {
 
     @Override
     public void strengthSuccessNotify(Player player) {
+        String msg = essentialsConfig.getSuccessNotify();
+        if(msg.contains("%player%"))
         player.sendMessage(ColorUtils.getColorStr(essentialsConfig.getSuccessNotify()));
     }
 

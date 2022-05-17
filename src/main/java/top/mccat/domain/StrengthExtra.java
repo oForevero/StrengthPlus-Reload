@@ -61,4 +61,15 @@ public class StrengthExtra {
     public void setArmorDefence(double armorDefence) {
         this.armorDefence = armorDefence;
     }
+
+    @Override
+    public String toString() {
+        return "StrengthExtra{" +
+                "swordDamage=" + swordDamage +
+                ", bowDamage=" + bowDamage +
+                ", crossBowDamage=" + crossBowDamage +
+                ", minDamage=" + minDamage +
+                ", armorDefence=" + armorDefence +
+                '}';
+    }
 }

@@ -72,7 +72,7 @@ public class ConfigFactory {
             fileConfiguration.load(strengthItemFile);
             reloadStrengthItem();
             fileConfiguration.load(strengthExtraFile);
-
+            reloadStrengthExtra();
             plugin.consoleLog(1,"配置文件读取成功！");
         } catch (IOException | InvalidConfigurationException e) {
             plugin.consoleLog(2,"配置文件IO读取错误，正在重新生成配置文件！");
@@ -94,6 +94,7 @@ public class ConfigFactory {
         plugin.saveResource("strength-level.yml",false);
         plugin.saveResource("strength-item.yml",false);
         plugin.saveResource("strength-stone.yml",false);
+        plugin.saveResource("strength-extra.yml",false);
     }
 
     /**
@@ -185,6 +186,10 @@ public class ConfigFactory {
         plugin.consoleLog(1,strengthStones);
     }
 
+    /**
+     * 重载强化物品
+     * @throws ConfigValueNotFoundException
+     */
     private void reloadStrengthItem() throws ConfigValueNotFoundException {
         strengthItems.clear();
         ConfigurationSection strengthConfig = fileConfiguration.getConfigurationSection("strength-item");
@@ -228,6 +233,7 @@ public class ConfigFactory {
         strengthExtra.setCrossBowDamage(damage.getDouble("crossbow"));
         strengthExtra.setArmorDefence(defence.getDouble("armorDefence"));
         strengthExtra.setMinDamage(defence.getDouble("minDamage"));
+        plugin.consoleLog(1,strengthExtra);
     }
 
     /**
