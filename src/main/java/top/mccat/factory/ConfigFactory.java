@@ -6,6 +6,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import top.mccat.StrengthPlus;
+import top.mccat.domain.StrengthExtra;
 import top.mccat.domain.StrengthLevel;
 import top.mccat.domain.StrengthStone;
 import top.mccat.domain.config.EssentialsConfig;
@@ -35,11 +36,13 @@ public class ConfigFactory {
     private final File strengthLevelFile;
     private final File strengthItemFile;
     private final File strengthStoneFile;
+    private final File strengthExtraFile;
     /**
      * 实体参数对象
      */
     private final StrengthStone strengthStone = new StrengthStone();
     private final EssentialsConfig essentialsConfig = new EssentialsConfig();
+    private final StrengthExtra strengthExtra = new StrengthExtra();
     private List<StrengthLevel> strengthLevels = new ArrayList<>();
     private List<StrengthStone> strengthStones = new ArrayList<>();
     private List<String> strengthItems = new ArrayList<>();
@@ -52,6 +55,7 @@ public class ConfigFactory {
         strengthLevelFile = new File(dataFolder, "strength-level.yml");
         strengthStoneFile = new File(dataFolder,"strength-stone.yml");
         strengthItemFile = new File(dataFolder,"strength-item.yml");
+        strengthExtraFile = new File(dataFolder, "strength-extra.yml");
     }
 
     /**
@@ -67,6 +71,8 @@ public class ConfigFactory {
             reloadStrengthStone();
             fileConfiguration.load(strengthItemFile);
             reloadStrengthItem();
+            fileConfiguration.load(strengthExtraFile);
+
             plugin.consoleLog(1,"配置文件读取成功！");
         } catch (IOException | InvalidConfigurationException e) {
             plugin.consoleLog(2,"配置文件IO读取错误，正在重新生成配置文件！");
@@ -119,21 +125,6 @@ public class ConfigFactory {
         essentialsConfig.setSuccessBroadcast(broadcast.getString("success"));
         essentialsConfig.setSafeBroadcast(broadcast.getString("safe"));
         essentialsConfig.setFailBroadcast(broadcast.getString("fail"));
-        ConfigurationSection damage = strengthPlus.getConfigurationSection("damage");
-        if(damage==null){
-            plugin.consoleLog(YamlConfigMessage.ConfigDamageLoadError);
-            throw new ConfigValueNotFoundException(YamlConfigMessage.ConfigDamageLoadError.getMessage());
-        }
-        ConfigurationSection defence = strengthPlus.getConfigurationSection("defence");
-        if(defence==null){
-            plugin.consoleLog(YamlConfigMessage.ConfigDefenceLoadError);
-            throw new ConfigValueNotFoundException(YamlConfigMessage.ConfigDefenceLoadError.getMessage());
-        }
-        essentialsConfig.setSwordDamage(damage.getDouble("sword"));
-        essentialsConfig.setBowDamage(damage.getDouble("bow"));
-        essentialsConfig.setCrossBowDamage(damage.getDouble("crossbow"));
-        essentialsConfig.setArmorDefence(defence.getDouble("armorDefence"));
-        essentialsConfig.setMinDamage(defence.getDouble("minDamage"));
         plugin.consoleLog(1,essentialsConfig);
     }
 
@@ -210,6 +201,33 @@ public class ConfigFactory {
             strengthItems.add(o.toString());
         }
         plugin.consoleLog(1,nameList);
+    }
+
+    /**
+     * 重载强化伤害参数
+     * @throws ConfigValueNotFoundException
+     */
+    private void reloadStrengthExtra() throws ConfigValueNotFoundException{
+        ConfigurationSection extraConfig = fileConfiguration.getConfigurationSection("strength-extra");
+        if(extraConfig==null){
+            plugin.consoleLog(YamlConfigMessage.ConfigDamageLoadError);
+            throw new ConfigValueNotFoundException(YamlConfigMessage.ConfigStrengthExtraLoadError.getMessage());
+        }
+        ConfigurationSection damage = extraConfig.getConfigurationSection("damage");
+        if(damage==null){
+            plugin.consoleLog(YamlConfigMessage.ConfigDamageLoadError);
+            throw new ConfigValueNotFoundException(YamlConfigMessage.ConfigDamageLoadError.getMessage());
+        }
+        ConfigurationSection defence = extraConfig.getConfigurationSection("defence");
+        if(defence==null){
+            plugin.consoleLog(YamlConfigMessage.ConfigDefenceLoadError);
+            throw new ConfigValueNotFoundException(YamlConfigMessage.ConfigDefenceLoadError.getMessage());
+        }
+        strengthExtra.setSwordDamage(damage.getDouble("sword"));
+        strengthExtra.setBowDamage(damage.getDouble("bow"));
+        strengthExtra.setCrossBowDamage(damage.getDouble("crossbow"));
+        strengthExtra.setArmorDefence(defence.getDouble("armorDefence"));
+        strengthExtra.setMinDamage(defence.getDouble("minDamage"));
     }
 
     /**

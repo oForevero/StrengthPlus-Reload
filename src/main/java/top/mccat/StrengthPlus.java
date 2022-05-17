@@ -133,7 +133,7 @@ public class StrengthPlus extends JavaPlugin {
         if(!configFactory.isDebugStatus()){
             return;
         }
-        String msg = "["+o.getClass().getName()+ "]==>"+ o;
+        String msg = "["+o.getClass().getName()+ "]("+utils.getCurrentLineNum()+")==>"+ o;
         if(level.equals(LogUtils.INFO_LEVEL)){
             utils.info(msg);
         }else if (level.equals(LogUtils.DEBUG_LEVEL)){

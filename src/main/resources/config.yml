@@ -7,6 +7,8 @@ strengthPlus:
   divider: '----------------'
   # 等级标识（单一等级标签）
   levelIcon: '✡'
+  # 每几个等级标识一换行
+  nextLineCount: 10
   # 通知
   notify:
     #成功时通知
@@ -17,19 +19,5 @@ strengthPlus:
     success: '&2恭喜%player%将他的装备强化到%level%级'
     safe: '&5很遗憾，%player%在将他的装备强化到%level%级的时候强化炉发生了爆炸，好在装备保护强化券保护了装备没有被摧毁！'
     fail: '&4很遗憾，%player%在将他的装备强化到%level%级的时候强化炉发生了爆炸，装备被摧毁了！'
-  # 伤害参数
-  damage:
-    # 单手剑伤害强化倍率
-    sword: 1.5
-    # 弓箭伤害强化倍率
-    bow: 1.5
-    # 弩箭伤害强化倍率
-    crossbow: 1.2
-  # 防御参数
-  defence:
-    # 一级护甲带来的伤害减免
-    armorDefence: 0.5
-    # 最小造成伤害
-    minDamage: 1
 
 

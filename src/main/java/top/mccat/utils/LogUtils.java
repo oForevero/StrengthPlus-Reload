@@ -74,6 +74,10 @@ public class LogUtils {
     public void error(String msg, Player player){
         logToUser(msg,Color.Red.getColorStr(),player);
     }
+    
+    public int getCurrentLineNum(){
+        return Thread.currentThread().getStackTrace()[1].getLineNumber();
+    }
 
     /**
      * log日志打印方法
