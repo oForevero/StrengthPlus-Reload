@@ -38,19 +38,19 @@ public class NotifyServiceImpl implements NotifyService {
     }
 
     @Override
-    public void StrengthSuccessBroadcast(Player player, String level) {
+    public void strengthSuccessBroadcast(Player player, String level) {
         String msg = replaceVariableExtra(essentialsConfig.getSuccessBroadcast(),player,level);
         notifyDao.notifyPlayer(msg, player);
     }
 
     @Override
-    public void StrengthSafeBroadcast(Player player, String level) {
+    public void strengthSafeBroadcast(Player player, String level) {
         String msg = replaceVariableExtra(essentialsConfig.getSafeBroadcast(),player,level);
         notifyDao.notifyPlayer(msg, player);
     }
 
     @Override
-    public void StrengthFailBroadcast(Player player, String level) {
+    public void strengthFailBroadcast(Player player, String level) {
         String msg = replaceVariableExtra(essentialsConfig.getFailBroadcast(),player,level);
         notifyDao.notifyPlayer(msg, player);
     }
