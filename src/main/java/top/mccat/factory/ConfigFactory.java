@@ -37,6 +37,7 @@ public class ConfigFactory {
     private final File strengthItemFile;
     private final File strengthStoneFile;
     private final File strengthExtraFile;
+    private final File strengthMenuFile;
     /**
      * 实体参数对象
      */
@@ -56,6 +57,7 @@ public class ConfigFactory {
         strengthStoneFile = new File(dataFolder,"strength-stone.yml");
         strengthItemFile = new File(dataFolder,"strength-item.yml");
         strengthExtraFile = new File(dataFolder, "strength-extra.yml");
+        strengthMenuFile = new File(dataFolder, "strength-menu.yml");
     }
 
     /**
@@ -234,6 +236,11 @@ public class ConfigFactory {
         strengthExtra.setArmorDefence(defence.getDouble("armorDefence"));
         strengthExtra.setMinDamage(defence.getDouble("minDamage"));
         plugin.consoleLog(1,strengthExtra);
+    }
+
+    public void reloadStrengthMenu() throws ConfigValueNotFoundException{
+        ConfigurationSection strengthMenu = fileConfiguration.getConfigurationSection("strength-menu");
+
     }
 
     /**
