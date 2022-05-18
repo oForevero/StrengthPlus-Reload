@@ -18,7 +18,6 @@ import java.util.*;
 public class StrengthChestInventory implements DoubleChestInventory {
     private int maxStackSize;
     private List<ItemStack> itemStacks;
-    private List<HumanEntity> humanEntities;
     private final ItemStack airStack = new ItemStack(Material.AIR);
     /**
      * 未使用
@@ -244,7 +243,7 @@ public class StrengthChestInventory implements DoubleChestInventory {
 
     @Override
     public InventoryType getType() {
-        return null;
+        return InventoryType.CHEST;
     }
 
     @Override
