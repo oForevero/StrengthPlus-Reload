@@ -3,6 +3,7 @@ package top.mccat.domain;
 /**
  * @author Distance
  * @date 2022/5/19 16:18
+ * config 基类
  */
 public abstract class BaseConfig {
     /**
