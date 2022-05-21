@@ -11,22 +11,22 @@ import org.bukkit.inventory.ItemStack;
 public interface StrengthService {
     /**
      * 强化物品方法
-     * @param player 玩家实体对象
+     * @param stack 物品堆
      * @return 是否强化成功
      */
-    boolean strengthItem(Player player);
+    boolean strengthItem(ItemStack stack);
 
     /**
      * 强化石检索方法，查看玩家是否有强化石
-     * @param player 玩家实体对象
+     * @param stack 物品堆
      * @return 第一个强化石物品堆对象
      */
-    ItemStack haveStone(Player player);
+    ItemStack haveStone(ItemStack[] stack);
 
     /**
      * 物品是否能被强化
-     * @param player 玩家实体对象
+     * @param stack 物品堆
      * @return 是否强化成功
      */
-    boolean itemCanStrength(Player player);
+    boolean itemCanStrength(ItemStack stack);
 }
