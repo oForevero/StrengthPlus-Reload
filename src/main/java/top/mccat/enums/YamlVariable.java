@@ -10,7 +10,7 @@ public enum YamlVariable {
      */
     PlayerVariable("%player%"),
     WeaponLevelVariable("%level%");
-    private String variable;
+    private final String variable;
 
     YamlVariable(String variable) {
         this.variable = variable;

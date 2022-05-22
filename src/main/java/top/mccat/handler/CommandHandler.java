@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import top.mccat.StrengthPlus;
 import top.mccat.enums.Permission;
+import top.mccat.ui.StrengthInventoryView;
 import top.mccat.utils.ColorUtils;
 
 /**
@@ -23,9 +24,23 @@ public class CommandHandler implements CommandExecutor {
     public boolean onCommand(CommandSender commandSender, Command command, String mainCommand, String[] commandArray) {
         if("console".equalsIgnoreCase(commandSender.getName())){
             Player player = (Player) commandSender;
-            if(commandArray.length == 0 || commandArray == null){
-
+            if(commandArray.length == 0){
+                notifyMenu(player);
+                return true;
+            }else {
+                if (player.hasPermission(Permission.Admin.getPermission())){
+                    switch (commandArray[0]){
+                        case "menu":
+                            StrengthInventoryView strengthInventoryView = new StrengthInventoryView();
+                            player.openInventory(strengthInventoryView);
+                            break;
+                        default:
+                            break;
+                    }
+                }
             }
+        }else {
+
         }
         return true;
     }
@@ -34,7 +49,7 @@ public class CommandHandler implements CommandExecutor {
      * 发送指令 menu
      * @param player player.
      */
-    public void menuInfo(Player player){
+    public void notifyMenu(Player player){
         sendMsg(player,"&4&l===---------&6&l[strengthPlus]&4&l----------===");
         sendMsg(player,"&c/sp 或 qh 打开此帮助菜单");
         sendMsg(player,"&a/sp 或 qh normal 进行一次强化");

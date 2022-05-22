@@ -39,4 +39,8 @@ public class StrengthServiceImpl implements StrengthService {
         }
         return false;
     }
+
+    public void setStrengthItem(List<String> strengthItem) {
+        this.strengthItem = strengthItem;
+    }
 }

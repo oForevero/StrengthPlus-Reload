@@ -30,8 +30,8 @@ public enum YamlConfigMessage {
     ConfigDefenceLoadError(2,"错误，strength-extra.yml下的defence数据不存在！"),
     ;
 
-    private int levelCode;
-    private String message;
+    private final int levelCode;
+    private final String message;
 
     YamlConfigMessage(int levelCode, String message) {
         this.levelCode = levelCode;
