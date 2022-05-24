@@ -3,6 +3,7 @@ package top.mccat.service.impl;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import top.mccat.service.StrengthService;
 
 import java.util.List;
@@ -15,11 +16,19 @@ public class StrengthServiceImpl implements StrengthService {
     private List<String> strengthItem;
     @Override
     public boolean strengthItem(ItemStack stack) {
+        if(itemCanStrength(stack)){
+
+        }
         return false;
     }
 
     @Override
     public ItemStack haveStone(ItemStack[] stack) {
+        return null;
+    }
+
+    @Override
+    public ItemStack haveStone(PlayerInventory playerInventory) {
         return null;
     }
 

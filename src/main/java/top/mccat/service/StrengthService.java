@@ -2,6 +2,7 @@ package top.mccat.service;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
 /**
  * @author Raven
@@ -22,6 +23,13 @@ public interface StrengthService {
      * @return 第一个强化石物品堆对象
      */
     ItemStack haveStone(ItemStack[] stack);
+
+    /**
+     * 从玩家的物品栏中检视是否有强化石方法
+     * @param playerInventory 玩家物品栏
+     * @return
+     */
+    ItemStack haveStone(PlayerInventory playerInventory);
 
     /**
      * 物品是否能被强化
