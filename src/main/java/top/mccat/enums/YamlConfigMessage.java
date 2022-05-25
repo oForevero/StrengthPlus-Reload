@@ -34,8 +34,8 @@ public enum YamlConfigMessage {
     ConfigStrengthMenuLoadError(2,"错误，strength-menu.yml下的strength-menu数据不存在！")
     ;
 
-    private int levelCode;
-    private String message;
+    private final int levelCode;
+    private final String message;
 
     YamlConfigMessage(int levelCode, String message) {
         this.levelCode = levelCode;
