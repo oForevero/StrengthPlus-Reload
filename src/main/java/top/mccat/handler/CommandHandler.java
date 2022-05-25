@@ -15,7 +15,7 @@ import top.mccat.utils.ColorUtils;
  * @date 2022/05/05 21:22
  */
 public class CommandHandler implements CommandExecutor {
-    private StrengthPlus plugin;
+    private final StrengthPlus plugin;
     private StrengthMenu strengthMenu;
 
     public CommandHandler(StrengthPlus plugin) {
