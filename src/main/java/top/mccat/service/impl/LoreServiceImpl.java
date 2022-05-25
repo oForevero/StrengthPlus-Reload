@@ -4,6 +4,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import top.mccat.domain.config.EssentialsConfig;
 import top.mccat.service.LoreService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,7 +45,13 @@ public class LoreServiceImpl implements LoreService {
 
     @Override
     public ItemMeta setStrengthLore(ItemMeta meta, List<String> loreList) {
-        return null;
+        ArrayList<String> lore = (ArrayList<String>) meta.getLore();
+        Integer startIndex = lore.indexOf(divider);
+        Integer endIndex = lore.lastIndexOf(divider);
+        lore.removeAll(lore.subList(startIndex+1,endIndex-1));
+        lore.addAll(startIndex,loreList);
+        meta.setLore(lore);
+        return meta;
     }
 
     public void setEssentialsConfig(EssentialsConfig essentialsConfig) {

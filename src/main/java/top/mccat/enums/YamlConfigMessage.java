@@ -28,6 +28,10 @@ public enum YamlConfigMessage {
     ConfigStrengthExtraLoadError(2,"错误，strength-extra.yml下的strength-extra数据不存在！"),
     ConfigDamageLoadError(2,"错误，strength-extra.yml下的damage数据不存在！"),
     ConfigDefenceLoadError(2,"错误，strength-extra.yml下的defence数据不存在！"),
+    /**
+     * 对应strength-menu下面的参数
+     */
+    ConfigStrengthMenuLoadError(2,"错误，strength-menu.yml下的strength-menu数据不存在！")
     ;
 
     private int levelCode;

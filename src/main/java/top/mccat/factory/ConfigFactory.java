@@ -8,12 +8,14 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import top.mccat.StrengthPlus;
 import top.mccat.domain.StrengthExtra;
 import top.mccat.domain.StrengthLevel;
+import top.mccat.domain.StrengthMenu;
 import top.mccat.domain.StrengthStone;
 import top.mccat.domain.config.EssentialsConfig;
 import top.mccat.enums.YamlConfigMessage;
 import top.mccat.exception.ConfigValueNotFoundException;
 import top.mccat.exception.ExtraParseException;
 import top.mccat.utils.ObjectParseUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,6 +46,7 @@ public class ConfigFactory {
     private final StrengthStone strengthStone = new StrengthStone();
     private final EssentialsConfig essentialsConfig = new EssentialsConfig();
     private final StrengthExtra strengthExtra = new StrengthExtra();
+    private final StrengthMenu strengthMenu = new StrengthMenu();
     private List<StrengthLevel> strengthLevels = new ArrayList<>();
     private List<StrengthStone> strengthStones = new ArrayList<>();
     private List<String> strengthItems = new ArrayList<>();
@@ -183,6 +186,11 @@ public class ConfigFactory {
             strengthStone.setSafe(getBooleanDefaultConfigExtra(stoneExtra,key+".isSafe"));
             strengthStone.setSuccess(getBooleanDefaultConfigExtra(stoneExtra,key+".isSuccess"));
             strengthStone.setAdmin(getBooleanDefaultConfigExtra(stoneExtra,key+".isAdmin"));
+            try {
+                strengthStone.setStrengthExtra(getIntegerDefaultConfigExtra(stoneExtra,key+".chanceExtra"));
+            } catch (ExtraParseException e) {
+                plugin.consoleLog(2,"strength-stone.yml下的额外几率"+e.getMessage());
+            }
             strengthStones.add(strengthStone);
         }
         plugin.consoleLog(1,strengthStones);
@@ -239,26 +247,36 @@ public class ConfigFactory {
     }
 
     public void reloadStrengthMenu() throws ConfigValueNotFoundException{
-        ConfigurationSection strengthMenu = fileConfiguration.getConfigurationSection("strength-menu");
-
+        ConfigurationSection menuConfig = fileConfiguration.getConfigurationSection("strength-menu");
+        if(menuConfig==null){
+            plugin.consoleLog(YamlConfigMessage.ConfigStrengthMenuLoadError);
+            throw new ConfigValueNotFoundException(YamlConfigMessage.ConfigStrengthExtraLoadError.getMessage());
+        }
+        strengthMenu.setMenuTitle(menuConfig.getString("menuTitle"));
+        strengthMenu.setMenuEnable(menuConfig.getBoolean("enable"));
+        strengthMenu.setChanceDisplay(menuConfig.getBoolean("menuDisplay"));
     }
 
     /**
      * 读取config默认参数，如不存在则设置默认boolean值为false
-     * @param mapExtra map参数
+     * @param mapData map参数
      * @param key 键值
      * @return 布尔值
      */
-    private boolean getBooleanDefaultConfigExtra(@NotNull Map mapExtra, @NotNull String key){
-        if(!mapExtra.containsKey(key)){
+    private boolean getBooleanDefaultConfigExtra(@NotNull Map mapData, @NotNull String key){
+        if(!mapData.containsKey(key)){
             return false;
         }else {
-            return ObjectParseUtils.booleanParse(mapExtra.get(key));
+            return ObjectParseUtils.booleanParse(mapData.get(key));
         }
     }
 
-    public List<StrengthLevel> getStrengthLevel() {
-        return strengthLevels;
+    private Integer getIntegerDefaultConfigExtra(@NotNull Map mapData, @NotNull String key) throws ExtraParseException {
+        if(!mapData.containsKey(key)){
+            return null;
+        }else {
+            return ObjectParseUtils.integerParse(mapData.get(key));
+        }
     }
 
     public StrengthStone getStrengthStone() {
@@ -267,6 +285,26 @@ public class ConfigFactory {
 
     public EssentialsConfig getEssentialsConfig() {
         return essentialsConfig;
+    }
+
+    public StrengthExtra getStrengthExtra() {
+        return strengthExtra;
+    }
+
+    public StrengthMenu getStrengthMenu() {
+        return strengthMenu;
+    }
+
+    public List<StrengthLevel> getStrengthLevels() {
+        return strengthLevels;
+    }
+
+    public List<StrengthStone> getStrengthStones() {
+        return strengthStones;
+    }
+
+    public List<String> getStrengthItems() {
+        return strengthItems;
     }
 
     public boolean isDebugStatus() {

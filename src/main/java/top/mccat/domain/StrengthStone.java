@@ -13,16 +13,17 @@ public class StrengthStone {
     private boolean isSafe;
     private boolean isSuccess;
     private boolean isAdmin;
-
+    private Integer strengthExtra;
     public StrengthStone() {
     }
 
-    public StrengthStone(String stoneName, List<String> lore, boolean isSafe, boolean isSuccess, boolean isAdmin) {
+    public StrengthStone(String stoneName, List<String> lore, boolean isSafe, boolean isSuccess, boolean isAdmin, Integer strengthExtra) {
         this.stoneName = stoneName;
         this.lore = lore;
         this.isSafe = isSafe;
         this.isSuccess = isSuccess;
         this.isAdmin = isAdmin;
+        this.strengthExtra = strengthExtra;
     }
 
     public String getStoneName() {
@@ -65,6 +66,14 @@ public class StrengthStone {
         isAdmin = admin;
     }
 
+    public Integer getStrengthExtra() {
+        return strengthExtra;
+    }
+
+    public void setStrengthExtra(Integer strengthExtra) {
+        this.strengthExtra = strengthExtra;
+    }
+
     @Override
     public String toString() {
         return "StrengthStone{" +
@@ -73,6 +82,7 @@ public class StrengthStone {
                 ", isSafe=" + isSafe +
                 ", isSuccess=" + isSuccess +
                 ", isAdmin=" + isAdmin +
+                ", strengthExtra=" + strengthExtra +
                 '}';
     }
 }

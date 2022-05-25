@@ -8,12 +8,12 @@ public enum StrengthLoreLabel {
     /**
      * 基础 Damage Label参数
      */
-    EssentialsSharpLabel("", 1),
-    EssentialsPowerLabel("", 2),
+    EssentialsSharpLabel("&b[&4伤害&b]", 1),
+    EssentialsPowerLabel("&b[&4弓力&b]", 2),
     /**
      * 基础 Defence Label 参数
      */
-    EssentialsDefenceLabel("", 3),
+    EssentialsDefenceLabel("&b[&1防御&b]", 3),
 
     ;
     private String loreLabel;
