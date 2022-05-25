@@ -5,8 +5,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import top.mccat.StrengthPlus;
+import top.mccat.domain.StrengthMenu;
 import top.mccat.enums.Permission;
-import top.mccat.ui.StrengthInventoryView;
+import top.mccat.ui.StrengthChestInventory;
 import top.mccat.utils.ColorUtils;
 
 /**
@@ -15,9 +16,15 @@ import top.mccat.utils.ColorUtils;
  */
 public class CommandHandler implements CommandExecutor {
     private StrengthPlus plugin;
+    private StrengthMenu strengthMenu;
 
-    public CommandHandler(StrengthPlus strengthPlus) {
+    public CommandHandler(StrengthPlus plugin) {
+        this.plugin = plugin;
+    }
+
+    public CommandHandler(StrengthPlus strengthPlus, StrengthMenu strengthMenu) {
         this.plugin = strengthPlus;
+        this.strengthMenu = strengthMenu;
     }
 
     @Override
@@ -29,14 +36,12 @@ public class CommandHandler implements CommandExecutor {
                 notifyMenu(player);
                 return true;
             }else {
-                plugin.consoleLog(1, "modify command");
                 if (player.hasPermission(Permission.Admin.getPermission()) || player.isOp()){
                     plugin.consoleLog(1,"player is op");
                     switch (commandArray[0]){
                         case "menu":
-                            StrengthInventoryView strengthInventoryView = new StrengthInventoryView();
-
-                            player.openInventory(strengthInventoryView);
+                            StrengthChestInventory strengthChestInventory = new StrengthChestInventory(strengthMenu);
+                            player.openInventory(strengthChestInventory.getStrengthInventory());
                             break;
                         default:
                             break;
@@ -72,5 +77,9 @@ public class CommandHandler implements CommandExecutor {
 
     public void sendMsg(Player player, String str){
         player.sendMessage(ColorUtils.getColorStr(str));
+    }
+
+    public void setStrengthMenu(StrengthMenu strengthMenu) {
+        this.strengthMenu = strengthMenu;
     }
 }

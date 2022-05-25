@@ -78,6 +78,8 @@ public class ConfigFactory {
             reloadStrengthItem();
             fileConfiguration.load(strengthExtraFile);
             reloadStrengthExtra();
+            fileConfiguration.load(strengthMenuFile);
+            reloadStrengthMenu();
             plugin.consoleLog(1,"配置文件读取成功！");
         } catch (IOException | InvalidConfigurationException e) {
             plugin.consoleLog(2,"配置文件IO读取错误，正在重新生成配置文件！");
@@ -100,6 +102,7 @@ public class ConfigFactory {
         plugin.saveResource("strength-item.yml",false);
         plugin.saveResource("strength-stone.yml",false);
         plugin.saveResource("strength-extra.yml",false);
+        plugin.saveResource("strength-menu.yml",false);
     }
 
     /**
@@ -255,6 +258,7 @@ public class ConfigFactory {
         strengthMenu.setMenuTitle(menuConfig.getString("menuTitle"));
         strengthMenu.setMenuEnable(menuConfig.getBoolean("enable"));
         strengthMenu.setChanceDisplay(menuConfig.getBoolean("menuDisplay"));
+        plugin.consoleLog(1,strengthMenu);
     }
 
     /**

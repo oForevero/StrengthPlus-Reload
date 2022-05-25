@@ -1,6 +1,7 @@
 package top.mccat;
 
 import com.sun.istack.internal.NotNull;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -8,6 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import top.mccat.enums.Permission;
 import top.mccat.enums.YamlConfigMessage;
 import top.mccat.factory.ConfigFactory;
+import top.mccat.handler.CommandHandler;
 import top.mccat.utils.ColorUtils;
 import top.mccat.utils.LogUtils;
 import javax.annotation.Nullable;
@@ -25,7 +27,8 @@ public class StrengthPlus extends JavaPlugin {
     private final LogUtils utils = new LogUtils(StrengthPlus.class,null);
     private final ConfigFactory configFactory = new ConfigFactory(this);
     private ConsoleCommandSender consoleSender;
-
+    private CommandHandler commandHandler = new CommandHandler(this);
+    private final String DefaultCommand = "sp";
     /**
      * 被spigot读取的方法
      */
@@ -43,7 +46,8 @@ public class StrengthPlus extends JavaPlugin {
      */
     @Override
     public void onEnable() {
-
+        commandHandler.setStrengthMenu(configFactory.getStrengthMenu());
+        Bukkit.getPluginCommand(DefaultCommand).setExecutor(commandHandler);
     }
 
     /**
