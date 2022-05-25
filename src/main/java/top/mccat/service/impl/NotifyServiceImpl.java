@@ -60,7 +60,7 @@ public class NotifyServiceImpl implements NotifyService {
      * @param strExtra str参数
      * @param player 玩家对象
      * @param level 等级参数
-     * @return
+     * @return 替换后的string 字符参数
      */
     private String replaceVariableExtra(String strExtra, Player player, String level){
         if(strExtra.contains(YamlVariable.PlayerVariable.getVariable())){
