@@ -14,24 +14,28 @@ import top.mccat.utils.ColorUtils;
  * @date 2022/05/05 21:22
  */
 public class CommandHandler implements CommandExecutor {
-    private StrengthPlus strengthPlus;
+    private StrengthPlus plugin;
 
     public CommandHandler(StrengthPlus strengthPlus) {
-        this.strengthPlus = strengthPlus;
+        this.plugin = strengthPlus;
     }
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String mainCommand, String[] commandArray) {
-        if("console".equalsIgnoreCase(commandSender.getName())){
+        if(!"console".equalsIgnoreCase(commandSender.getName())){
             Player player = (Player) commandSender;
             if(commandArray.length == 0){
+                plugin.consoleLog(1,"notify message");
                 notifyMenu(player);
                 return true;
             }else {
-                if (player.hasPermission(Permission.Admin.getPermission())){
+                plugin.consoleLog(1, "modify command");
+                if (player.hasPermission(Permission.Admin.getPermission()) || player.isOp()){
+                    plugin.consoleLog(1,"player is op");
                     switch (commandArray[0]){
                         case "menu":
                             StrengthInventoryView strengthInventoryView = new StrengthInventoryView();
+
                             player.openInventory(strengthInventoryView);
                             break;
                         default:

@@ -21,7 +21,8 @@ public class StrengthChestInventory implements DoubleChestInventory {
     private final ItemStack airStack = new ItemStack(Material.AIR);
 
     public StrengthChestInventory(){
-
+        itemStacks = new ArrayList<>();
+        itemStacks.add(airStack);
     }
 
     public StrengthChestInventory(List<ItemStack> itemStacks) {
