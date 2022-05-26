@@ -16,8 +16,8 @@ public enum StrengthLoreLabel {
     EssentialsDefenceLabel("&b[&1防御&b]", 3),
 
     ;
-    private String loreLabel;
-    private Integer status;
+    private final String loreLabel;
+    private final Integer status;
 
     StrengthLoreLabel(String loreLabel, Integer status) {
         this.loreLabel = loreLabel;

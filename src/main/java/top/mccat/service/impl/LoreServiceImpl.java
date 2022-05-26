@@ -30,8 +30,11 @@ public class LoreServiceImpl implements LoreService {
     @Override
     public ItemMeta clearStrengthLore(ItemMeta meta) {
         List<String> lore = meta.getLore();
-        Integer startIndex = lore.indexOf(divider);
-        Integer endIndex = lore.lastIndexOf(divider);
+        if(lore == null){
+            return null;
+        }
+        int startIndex = lore.indexOf(divider);
+        int endIndex = lore.lastIndexOf(divider);
         lore.removeAll(lore.subList(startIndex,endIndex));
         meta.setLore(lore);
         return meta;
@@ -46,8 +49,11 @@ public class LoreServiceImpl implements LoreService {
     @Override
     public ItemMeta setStrengthLore(ItemMeta meta, List<String> loreList) {
         ArrayList<String> lore = (ArrayList<String>) meta.getLore();
-        Integer startIndex = lore.indexOf(divider);
-        Integer endIndex = lore.lastIndexOf(divider);
+        if(lore == null){
+            return null;
+        }
+        int startIndex = lore.indexOf(divider);
+        int endIndex = lore.lastIndexOf(divider);
         lore.removeAll(lore.subList(startIndex+1,endIndex-1));
         lore.addAll(startIndex,loreList);
         meta.setLore(lore);

@@ -16,11 +16,13 @@ import top.mccat.domain.StrengthMenu;
 import top.mccat.domain.StrengthStone;
 import top.mccat.enums.Color;
 import top.mccat.enums.msg.StrengthPlusMsg;
+import top.mccat.factory.ThreadPoolFactory;
 import top.mccat.utils.ColorUtils;
 import top.mccat.utils.LogUtils;
 import top.mccat.utils.MsgUtils;
 
 import java.util.*;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * @author Distance
@@ -40,12 +42,15 @@ public class StrengthChestInventory implements Listener{
     private final ItemStack fire = new ItemStack(Material.SOUL_CAMPFIRE);
     private final ItemStack startButton = new ItemStack(Material.END_CRYSTAL);
     private final ItemStack extraTable = new ItemStack(Material.END_PORTAL_FRAME);
+    private final ThreadPoolExecutor threadPool = ThreadPoolFactory.getThreadPool();
     private Thread uiSonThread;
     private LogUtils logUtils;
     private MsgUtils msgUtils;
     private List<StrengthStone> stoneList;
     Map<Player,Boolean> playerInMenuMap = new HashMap();
-//    整体ui数组，特殊按钮等用air itemstack填充，强化物品放置栏用
+    /**
+     * 整体ui数组，特殊按钮等用air itemstack填充，强化物品放置栏用
+     */
     private final ItemStack[] STRENGTH_UI = new ItemStack[]
             {strengthDividerGlass,strengthDividerGlass,strengthDividerGlass,ironBars,ironBars,ironBars,ironBars,strengthDividerGlass,displayBar,
             strengthDividerGlass,strengthDividerGlass,strengthDividerGlass,ironBars,air,air,ironBars,strengthDividerGlass,strengthDividerGlass,
@@ -160,35 +165,36 @@ public class StrengthChestInventory implements Listener{
     }
 
     /**
-     * 强化动画
-     * @param inventory
-     * @param level
+     * 强化动画，使用线程池方法
+     * @param inventory 背包参数
+     * @param level 武器等级
      */
     private void strengthAnimation(Inventory inventory, int level, Player player){
-        uiSonThread = new Thread(()->{
+        threadPool.execute(()->{
 //            循环开始和闪烁次数
             int i = 45;
             int time = 0;
             while(i < 52){
-                inventory.setItem(i,runningBar);
-                i++;
                 try {
+                    inventory.setItem(i,runningBar);
+                    i++;
                     Thread.sleep(200);
                 } catch (InterruptedException e) {
                     logUtils.consoleLog(2,"警告，线程阻塞，可能是并发导致的问题！");
+                    break;
                 }
             }
             while(time < 6){
                 try {
                     strengthFinishAnimation(inventory,time,true);
+                    time++;
                 } catch (InterruptedException e) {
                     logUtils.consoleLog(2,"警告，线程阻塞，可能是并发导致的问题！");
+                    break;
                 }
-                time++;
             }
             playerInMenuMap.put(player,false);
         });
-        uiSonThread.start();
     }
 
     /**
@@ -196,7 +202,6 @@ public class StrengthChestInventory implements Listener{
      * @param inventory 强化ui
      * @param time 闪烁次数
      * @param success 是否强化成功
-     * @throws InterruptedException
      */
     private void strengthFinishAnimation(Inventory inventory,int time, boolean success) throws InterruptedException {
         int start = 0;
@@ -205,8 +210,8 @@ public class StrengthChestInventory implements Listener{
                 for(int i = 45; i < 52; i++){
                     inventory.setItem(i,modifyProgressBarStatus(time));
                 }
+                Thread.sleep(200);
                 start++;
-                Thread.sleep(300);
             }
         }else {
             for (int i = 45; i < 52; i++){
@@ -218,7 +223,7 @@ public class StrengthChestInventory implements Listener{
     /**
      * 切换动画状态
      * @param time 次数
-     * @return
+     * @return ItemStack 对象
      */
     private ItemStack modifyProgressBarStatus(int time){
         if(time%2==0){
