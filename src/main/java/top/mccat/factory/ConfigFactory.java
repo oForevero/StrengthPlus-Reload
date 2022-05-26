@@ -11,9 +11,12 @@ import top.mccat.domain.StrengthLevel;
 import top.mccat.domain.StrengthMenu;
 import top.mccat.domain.StrengthStone;
 import top.mccat.domain.config.EssentialsConfig;
-import top.mccat.enums.YamlConfigMessage;
+import top.mccat.enums.Color;
+import top.mccat.enums.msg.YamlConfigMsg;
 import top.mccat.exception.ConfigValueNotFoundException;
 import top.mccat.exception.ExtraParseException;
+import top.mccat.utils.LogUtils;
+import top.mccat.utils.MsgUtils;
 import top.mccat.utils.ObjectParseUtils;
 
 import java.io.File;
@@ -40,6 +43,8 @@ public class ConfigFactory {
     private final File strengthStoneFile;
     private final File strengthExtraFile;
     private final File strengthMenuFile;
+    private final LogUtils logUtils;
+    private MsgUtils msgUtils;
     /**
      * 实体参数对象
      */
@@ -52,8 +57,11 @@ public class ConfigFactory {
     private List<String> strengthItems = new ArrayList<>();
     private boolean debugStatus = false;
     public static final String PLUGIN_VERSION = "2.1-Alpha";
-    public ConfigFactory(StrengthPlus plugin){
+
+    public ConfigFactory(StrengthPlus plugin, LogUtils logUtils, MsgUtils msgUtils){
         this.plugin = plugin;
+        this.logUtils = logUtils;
+        this.msgUtils = msgUtils;
         File dataFolder = plugin.getDataFolder();
         config = new File(dataFolder,"config.yml");
         strengthLevelFile = new File(dataFolder, "strength-level.yml");
@@ -68,6 +76,7 @@ public class ConfigFactory {
      */
     public void readConfigFile(){
         try {
+            msgUtils.sendToConsole("正在读取默认配置文件......",Color.LightGreen);
             fileConfiguration.load(config);
             reloadEssentialsConfig();
             fileConfiguration.load(strengthLevelFile);
@@ -80,16 +89,15 @@ public class ConfigFactory {
             reloadStrengthExtra();
             fileConfiguration.load(strengthMenuFile);
             reloadStrengthMenu();
-            plugin.consoleLog(1,"配置文件读取成功！");
+            msgUtils.sendToConsole("配置文件读取成功！",Color.LightRed);
         } catch (IOException | InvalidConfigurationException e) {
-            plugin.consoleLog(2,"配置文件IO读取错误，正在重新生成配置文件！");
-            plugin.consoleLog(1,"正在写入默认配置文件......");
+            msgUtils.sendToConsole("配置文件IO读取错误，正在重新生成配置文件！", Color.LightRed);
+            msgUtils.sendToConsole("正在写入默认配置文件......",Color.LightGreen);
             writeConfigFile();
-            plugin.consoleLog(1,"正在读取默认配置文件......");
             readConfigFile();
-            plugin.consoleLog(1,"读取默认配置文件成功！");
         } catch (ConfigValueNotFoundException e){
             //当Config文件中读取值失败执行，个人思路是直接读取本地默认参数
+            msgUtils.sendToConsole(e.getMessage(),Color.Red);
         }
     }
 
@@ -112,29 +120,32 @@ public class ConfigFactory {
     private void reloadEssentialsConfig() throws ConfigValueNotFoundException {
         ConfigurationSection strengthPlus = fileConfiguration.getConfigurationSection("strengthPlus");
         if(strengthPlus==null){
-            plugin.consoleLog(YamlConfigMessage.ConfigStrengthPlusLoadError);
-            throw new ConfigValueNotFoundException(YamlConfigMessage.ConfigStrengthPlusLoadError.getMessage());
+            logUtils.consoleLog(YamlConfigMsg.ConfigStrengthPlusLoadError);
+            throw new ConfigValueNotFoundException(YamlConfigMsg.ConfigStrengthPlusLoadError.getMsg());
         }
         debugStatus = strengthPlus.getBoolean("debug");
+        //设置log状态
+        logUtils.setDebugStatus(debugStatus);
+        essentialsConfig.setPluginName(strengthPlus.getString("pluginName"));
         essentialsConfig.setTitle(strengthPlus.getString("title"));
         essentialsConfig.setDivider("divider");
         essentialsConfig.setLevelIcon("levelIcon");
         ConfigurationSection notify = strengthPlus.getConfigurationSection("notify");
         if(notify==null){
-            plugin.consoleLog(YamlConfigMessage.ConfigNotifyLoadError);
-            throw new ConfigValueNotFoundException(YamlConfigMessage.ConfigNotifyLoadError.getMessage());
+            logUtils.consoleLog(YamlConfigMsg.ConfigNotifyLoadError);
+            throw new ConfigValueNotFoundException(YamlConfigMsg.ConfigNotifyLoadError.getMsg());
         }
         essentialsConfig.setSuccessNotify(notify.getString("success"));
         essentialsConfig.setFailNotify(notify.getString("fail"));
         ConfigurationSection broadcast = strengthPlus.getConfigurationSection("broadcast");
         if(broadcast==null){
-            plugin.consoleLog(YamlConfigMessage.ConfigBroadcastLoadError);
-            throw new ConfigValueNotFoundException(YamlConfigMessage.ConfigBroadcastLoadError.getMessage());
+            logUtils.consoleLog(YamlConfigMsg.ConfigBroadcastLoadError);
+            throw new ConfigValueNotFoundException(YamlConfigMsg.ConfigBroadcastLoadError.getMsg());
         }
         essentialsConfig.setSuccessBroadcast(broadcast.getString("success"));
         essentialsConfig.setSafeBroadcast(broadcast.getString("safe"));
         essentialsConfig.setFailBroadcast(broadcast.getString("fail"));
-        plugin.consoleLog(1,essentialsConfig);
+        logUtils.consoleLog(1,essentialsConfig);
     }
 
     /**
@@ -145,8 +156,8 @@ public class ConfigFactory {
         strengthLevels.clear();
         ConfigurationSection levelConfig = fileConfiguration.getConfigurationSection("strength-level");
         if (levelConfig == null){
-            plugin.consoleLog(YamlConfigMessage.ConfigStrengthLevelLoadError);
-            throw new ConfigValueNotFoundException(YamlConfigMessage.ConfigStrengthLevelLoadError.getMessage());
+            logUtils.consoleLog(YamlConfigMsg.ConfigStrengthLevelLoadError);
+            throw new ConfigValueNotFoundException(YamlConfigMsg.ConfigStrengthLevelLoadError.getMsg());
         }
         //获取强化等级key和参数
         Map<String, Object> values = levelConfig.getValues(false);
@@ -161,10 +172,10 @@ public class ConfigFactory {
                 strengthLevel.setBreakItem(getBooleanDefaultConfigExtra(levelExtra,key+".break"));
                 strengthLevels.add(strengthLevel);
             } catch (ExtraParseException e) {
-                plugin.consoleLog(2,"strength-level.yml下的等级"+e.getMessage());
+                logUtils.consoleLog(2,"strength-level.yml下的等级"+e.getMessage());
             }
         }
-        plugin.consoleLog(1,strengthLevels);
+        logUtils.consoleLog(1,strengthLevels);
     }
 
     /**
@@ -175,8 +186,8 @@ public class ConfigFactory {
         strengthStones.clear();
         ConfigurationSection stoneConfig = fileConfiguration.getConfigurationSection("strength-stone");
         if(stoneConfig==null){
-            plugin.consoleLog(YamlConfigMessage.ConfigStrengthStoneLoadError);
-            throw new ConfigValueNotFoundException(YamlConfigMessage.ConfigStrengthStoneLoadError.getMessage());
+            logUtils.consoleLog(YamlConfigMsg.ConfigStrengthStoneLoadError);
+            throw new ConfigValueNotFoundException(YamlConfigMsg.ConfigStrengthStoneLoadError.getMsg());
         }
         //获取强化石key和参数
         Map<String, Object> values = stoneConfig.getValues(false);
@@ -192,11 +203,11 @@ public class ConfigFactory {
             try {
                 strengthStone.setStrengthExtra(getIntegerDefaultConfigExtra(stoneExtra,key+".chanceExtra"));
             } catch (ExtraParseException e) {
-                plugin.consoleLog(2,"strength-stone.yml下的额外几率"+e.getMessage());
+                logUtils.consoleLog(2,"strength-stone.yml下的额外几率"+e.getMessage());
             }
             strengthStones.add(strengthStone);
         }
-        plugin.consoleLog(1,strengthStones);
+        logUtils.consoleLog(1,strengthStones);
     }
 
     /**
@@ -207,18 +218,18 @@ public class ConfigFactory {
         strengthItems.clear();
         ConfigurationSection strengthConfig = fileConfiguration.getConfigurationSection("strength-item");
         if(strengthConfig==null) {
-            plugin.consoleLog(YamlConfigMessage.ConfigStrengthItemLoadError);
-            throw new ConfigValueNotFoundException(YamlConfigMessage.ConfigStrengthItemLoadError.getMessage());
+            logUtils.consoleLog(YamlConfigMsg.ConfigStrengthItemLoadError);
+            throw new ConfigValueNotFoundException(YamlConfigMsg.ConfigStrengthItemLoadError.getMsg());
         }
         List<?> nameList = strengthConfig.getList("name");
         if(nameList == null){
-            plugin.consoleLog(YamlConfigMessage.ConfigStrengthItemLoadError);
-            throw new ConfigValueNotFoundException(YamlConfigMessage.ConfigStrengthItemLoadError.getMessage());
+            logUtils.consoleLog(YamlConfigMsg.ConfigStrengthItemLoadError);
+            throw new ConfigValueNotFoundException(YamlConfigMsg.ConfigStrengthItemLoadError.getMsg());
         }
         for(Object o : nameList){
             strengthItems.add(o.toString());
         }
-        plugin.consoleLog(1,nameList);
+        logUtils.consoleLog(1,nameList);
     }
 
     /**
@@ -228,37 +239,37 @@ public class ConfigFactory {
     private void reloadStrengthExtra() throws ConfigValueNotFoundException{
         ConfigurationSection extraConfig = fileConfiguration.getConfigurationSection("strength-extra");
         if(extraConfig==null){
-            plugin.consoleLog(YamlConfigMessage.ConfigDamageLoadError);
-            throw new ConfigValueNotFoundException(YamlConfigMessage.ConfigStrengthExtraLoadError.getMessage());
+            logUtils.consoleLog(YamlConfigMsg.ConfigDamageLoadError);
+            throw new ConfigValueNotFoundException(YamlConfigMsg.ConfigStrengthExtraLoadError.getMsg());
         }
         ConfigurationSection damage = extraConfig.getConfigurationSection("damage");
         if(damage==null){
-            plugin.consoleLog(YamlConfigMessage.ConfigDamageLoadError);
-            throw new ConfigValueNotFoundException(YamlConfigMessage.ConfigDamageLoadError.getMessage());
+            logUtils.consoleLog(YamlConfigMsg.ConfigDamageLoadError);
+            throw new ConfigValueNotFoundException(YamlConfigMsg.ConfigDamageLoadError.getMsg());
         }
         ConfigurationSection defence = extraConfig.getConfigurationSection("defence");
         if(defence==null){
-            plugin.consoleLog(YamlConfigMessage.ConfigDefenceLoadError);
-            throw new ConfigValueNotFoundException(YamlConfigMessage.ConfigDefenceLoadError.getMessage());
+            logUtils.consoleLog(YamlConfigMsg.ConfigDefenceLoadError);
+            throw new ConfigValueNotFoundException(YamlConfigMsg.ConfigDefenceLoadError.getMsg());
         }
         strengthExtra.setSwordDamage(damage.getDouble("sword"));
         strengthExtra.setBowDamage(damage.getDouble("bow"));
         strengthExtra.setCrossBowDamage(damage.getDouble("crossbow"));
         strengthExtra.setArmorDefence(defence.getDouble("armorDefence"));
         strengthExtra.setMinDamage(defence.getDouble("minDamage"));
-        plugin.consoleLog(1,strengthExtra);
+        logUtils.consoleLog(1,strengthExtra);
     }
 
     public void reloadStrengthMenu() throws ConfigValueNotFoundException{
         ConfigurationSection menuConfig = fileConfiguration.getConfigurationSection("strength-menu");
         if(menuConfig==null){
-            plugin.consoleLog(YamlConfigMessage.ConfigStrengthMenuLoadError);
-            throw new ConfigValueNotFoundException(YamlConfigMessage.ConfigStrengthExtraLoadError.getMessage());
+            logUtils.consoleLog(YamlConfigMsg.ConfigStrengthMenuLoadError);
+            throw new ConfigValueNotFoundException(YamlConfigMsg.ConfigStrengthExtraLoadError.getMsg());
         }
         strengthMenu.setMenuTitle(menuConfig.getString("menuTitle"));
         strengthMenu.setMenuEnable(menuConfig.getBoolean("enable"));
         strengthMenu.setChanceDisplay(menuConfig.getBoolean("menuDisplay"));
-        plugin.consoleLog(1,strengthMenu);
+        logUtils.consoleLog(1,strengthMenu);
     }
 
     /**
@@ -313,5 +324,9 @@ public class ConfigFactory {
 
     public boolean isDebugStatus() {
         return debugStatus;
+    }
+
+    public void setMsgUtils(MsgUtils msgUtils) {
+        this.msgUtils = msgUtils;
     }
 }

@@ -1,16 +1,12 @@
 package top.mccat.domain.config;
 
-import top.mccat.domain.StrengthLevel;
-import top.mccat.domain.StrengthStone;
-
-import java.util.List;
-
 /**
  * @author Raven
  * @date 2022/05/05 21:24
  * config.yml配置文件
  */
 public class EssentialsConfig {
+    private String pluginName;
     private String title;
     private String divider;
     private String levelIcon;
@@ -23,12 +19,13 @@ public class EssentialsConfig {
     public EssentialsConfig() {
     }
 
-    public EssentialsConfig(String title, String divider, String levelIcon, String successNotify, String failNotify, String successBroadcast, String safeBroadcast, String failBroadcast) {
+    public EssentialsConfig(String pluginName, String title, String divider, String levelIcon, String successNotify, String failNotify, String successBroadcast, String safeBroadcast, String failBroadcast) {
+        this.pluginName = pluginName;
         this.title = title;
         this.divider = divider;
+        this.levelIcon = levelIcon;
         this.successNotify = successNotify;
         this.failNotify = failNotify;
-        this.levelIcon = levelIcon;
         this.successBroadcast = successBroadcast;
         this.safeBroadcast = safeBroadcast;
         this.failBroadcast = failBroadcast;
@@ -98,10 +95,19 @@ public class EssentialsConfig {
         this.failBroadcast = failBroadcast;
     }
 
+    public String getPluginName() {
+        return pluginName;
+    }
+
+    public void setPluginName(String pluginName) {
+        this.pluginName = pluginName;
+    }
+
     @Override
     public String toString() {
         return "EssentialsConfig{" +
-                "title='" + title + '\'' +
+                "pluginName='" + pluginName + '\'' +
+                ", title='" + title + '\'' +
                 ", divider='" + divider + '\'' +
                 ", levelIcon='" + levelIcon + '\'' +
                 ", successNotify='" + successNotify + '\'' +

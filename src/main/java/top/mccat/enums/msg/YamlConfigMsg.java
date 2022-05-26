@@ -1,9 +1,12 @@
-package top.mccat.enums;
+package top.mccat.enums.msg;
+
+import top.mccat.enums.EnumMsg;
+
 /**
  * @author Raven
  * @date 2022/05/12 16:54
  */
-public enum YamlConfigMessage {
+public enum YamlConfigMsg implements EnumMsg {
     /**
      * 对应config下的error级别的消息
      */
@@ -35,26 +38,27 @@ public enum YamlConfigMessage {
     ;
 
     private final int levelCode;
-    private final String message;
+    private final String msg;
 
-    YamlConfigMessage(int levelCode, String message) {
+    YamlConfigMsg(int levelCode, String msg) {
         this.levelCode = levelCode;
-        this.message = message;
+        this.msg = msg;
     }
 
     public int getLevelCode() {
         return levelCode;
     }
 
-    public String getMessage() {
-        return message;
+    @Override
+    public String getMsg() {
+        return msg;
     }
 
     @Override
     public String toString() {
-        return "YamlConfigMessage{" +
+        return "YamlConfigMsg{" +
                 "levelCode=" + levelCode +
-                ", message='" + message + '\'' +
+                ", msg='" + msg + '\'' +
                 '}';
     }
 }

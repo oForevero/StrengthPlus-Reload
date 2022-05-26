@@ -5,13 +5,16 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import top.mccat.enums.Permission;
-import top.mccat.enums.YamlConfigMessage;
 import top.mccat.factory.ConfigFactory;
 import top.mccat.handler.CommandHandler;
+import top.mccat.ui.StrengthChestInventory;
 import top.mccat.utils.ColorUtils;
 import top.mccat.utils.LogUtils;
+import top.mccat.utils.MsgUtils;
+
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,10 +27,12 @@ import java.util.stream.Collectors;
  * 主插件启动类
  */
 public class StrengthPlus extends JavaPlugin {
-    private final LogUtils utils = new LogUtils(StrengthPlus.class,null);
-    private final ConfigFactory configFactory = new ConfigFactory(this);
+    private final LogUtils logutils = new LogUtils();
+    private final MsgUtils msgUtils = new MsgUtils();
+    private ConfigFactory configFactory;
     private ConsoleCommandSender consoleSender;
-    private CommandHandler commandHandler = new CommandHandler(this);
+    private CommandHandler commandHandler;
+    private StrengthChestInventory strengthChestInventory;
     private final String DefaultCommand = "sp";
     /**
      * 被spigot读取的方法
@@ -35,10 +40,16 @@ public class StrengthPlus extends JavaPlugin {
     @Override
     public void onLoad() {
         consoleSender = this.getServer().getConsoleSender();
-        //获取console的打印日志实体
-        utils.setCommandSender(consoleSender);
+        //进行日志工具和消息工具的console对象传递
+        logutils.setCommandSender(consoleSender);
+        msgUtils.setCommandSender(consoleSender);
         authorMenu(this);
+        //对配置文件进行读取
+        configFactory = new ConfigFactory(this,logutils,msgUtils);
         configFactory.readConfigFile();
+        msgUtils.setEssentialsConfig(configFactory.getEssentialsConfig());
+        initEssentialsModel();
+
     }
 
     /**
@@ -46,8 +57,7 @@ public class StrengthPlus extends JavaPlugin {
      */
     @Override
     public void onEnable() {
-        commandHandler.setStrengthMenu(configFactory.getStrengthMenu());
-        Bukkit.getPluginCommand(DefaultCommand).setExecutor(commandHandler);
+        enableListener();
     }
 
     /**
@@ -67,10 +77,35 @@ public class StrengthPlus extends JavaPlugin {
     }
 
     /**
+     * 初始化基础模块参数
+     */
+    private void initEssentialsModel(){
+        logutils.setDebugStatus(configFactory.isDebugStatus());
+        //初始化强化界面ui
+        strengthChestInventory = new StrengthChestInventory(configFactory.getStrengthMenu(),logutils,msgUtils);
+        //初始化命令响应
+        commandHandler = new CommandHandler(configFactory.getStrengthMenu(),msgUtils,logutils);
+        commandHandler.setStrengthMenu(configFactory.getStrengthMenu());
+        commandHandler.setStrengthChestInventory(strengthChestInventory);
+    }
+
+
+    /**
+     * 逐步允许监听器
+     */
+    private void enableListener(){
+        //注册插件指令监听器
+        Bukkit.getPluginCommand(DefaultCommand).setExecutor(commandHandler);
+        //注册ui事件监听器
+        PluginManager pluginManager = getServer().getPluginManager();
+        pluginManager.registerEvents(strengthChestInventory,this);
+    }
+
+    /**
      * 子命令联想
      */
     private final String[] subUserCommands = {"normal", "safe", "success"};
-    private final String[] subCommands = {"normal", "safe", "success", "admin", "reload", "normalstone", "safestone", "successstone"};
+    private final String[] subCommands = {"menu", "normal", "safe", "success", "admin", "reload", "normalstone", "safestone", "successstone"};
 
     /**
      * tab联想指令
@@ -97,59 +132,9 @@ public class StrengthPlus extends JavaPlugin {
         return Arrays.stream(subUserCommands).filter(s -> s.startsWith(args[0])).collect(Collectors.toList());
     }
 
-    /**
-     * 执行log方法，默认封装到主类中
-     * @param level 代表执行参数
-     * @param msg 消息参数
-     */
-    public void consoleLog(Integer level, String msg){
-        if(!configFactory.isDebugStatus()){
-            return;
-        }
-        if(level.equals(LogUtils.INFO_LEVEL)){
-            utils.info(msg);
-        }else if (level.equals(LogUtils.DEBUG_LEVEL)){
-            utils.debug(msg);
-        }else if(level.equals(LogUtils.ERROR_LEVEL)){
-            utils.error(msg);
-        }
-    }
-
-    /**
-     * 直接通过枚举打印日志
-     * @param yamlConfigMessage 枚举对象
-     */
-    public void consoleLog(YamlConfigMessage yamlConfigMessage){
-        if(!configFactory.isDebugStatus()){
-            return;
-        }
-        Integer level = yamlConfigMessage.getLevelCode();
-        String msg = yamlConfigMessage.getMessage();
-        consoleLog(level,msg);
-    }
-
-    /**
-     * 执行log方法，默认封装到主类中，对象会打印对应的对象名log，范例如下[object]==>
-     * @param level 代表执行参数
-     * @param o 对象参数
-     */
-    public void consoleLog(Integer level, @NotNull Object o){
-        if(!configFactory.isDebugStatus()){
-            return;
-        }
-        String msg = o.toString();
-        if(level.equals(LogUtils.INFO_LEVEL)){
-            utils.info(msg);
-        }else if (level.equals(LogUtils.DEBUG_LEVEL)){
-            utils.debug(msg);
-        }else if(level.equals(LogUtils.ERROR_LEVEL)){
-            utils.error(msg);
-        }
-    }
-
     @Override
     public void saveDefaultConfig() {
-        configFactory.writeConfigFile();
+        configFactory.readConfigFile();
     }
 
     public void consoleMsg(String msg){

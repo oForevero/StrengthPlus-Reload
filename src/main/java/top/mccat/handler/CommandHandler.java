@@ -4,27 +4,26 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import top.mccat.StrengthPlus;
 import top.mccat.domain.StrengthMenu;
 import top.mccat.enums.Permission;
 import top.mccat.ui.StrengthChestInventory;
 import top.mccat.utils.ColorUtils;
+import top.mccat.utils.LogUtils;
+import top.mccat.utils.MsgUtils;
 
 /**
  * @author Raven
  * @date 2022/05/05 21:22
  */
 public class CommandHandler implements CommandExecutor {
-    private final StrengthPlus plugin;
     private StrengthMenu strengthMenu;
-
-    public CommandHandler(StrengthPlus plugin) {
-        this.plugin = plugin;
-    }
-
-    public CommandHandler(StrengthPlus strengthPlus, StrengthMenu strengthMenu) {
-        this.plugin = strengthPlus;
+    private final MsgUtils msgUtils;
+    private final LogUtils logUtils;
+    private StrengthChestInventory strengthChestInventory;
+    public CommandHandler(StrengthMenu strengthMenu, MsgUtils msgUtils, LogUtils logUtils) {
         this.strengthMenu = strengthMenu;
+        this.msgUtils = msgUtils;
+        this.logUtils = logUtils;
     }
 
     @Override
@@ -32,17 +31,18 @@ public class CommandHandler implements CommandExecutor {
         if(!"console".equalsIgnoreCase(commandSender.getName())){
             Player player = (Player) commandSender;
             if(commandArray.length == 0){
-                plugin.consoleLog(1,"notify message");
                 notifyMenu(player);
                 return true;
             }else {
                 if (player.hasPermission(Permission.Admin.getPermission()) || player.isOp()){
-                    plugin.consoleLog(1,"player is op");
                     switch (commandArray[0]){
                         case "menu":
-                            StrengthChestInventory strengthChestInventory = new StrengthChestInventory(strengthMenu);
+                            //先关闭视图
+                            player.closeInventory();
+                            //开启强化菜单
                             player.openInventory(strengthChestInventory.getStrengthInventory());
                             break;
+                        case "":
                         default:
                             break;
                     }
@@ -81,5 +81,9 @@ public class CommandHandler implements CommandExecutor {
 
     public void setStrengthMenu(StrengthMenu strengthMenu) {
         this.strengthMenu = strengthMenu;
+    }
+
+    public void setStrengthChestInventory(StrengthChestInventory strengthChestInventory) {
+        this.strengthChestInventory = strengthChestInventory;
     }
 }
