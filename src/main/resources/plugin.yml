@@ -1,7 +1,10 @@
 name: strengthPlus
 main: top.mccat.StrengthPlus
-version: 2.1-Alpha
+version: 2.1.0-Alpha
 api-version: 1.18
+softdepend:
+  - [PlaceHolderApi]
+  - [Vault]
 commands:
   sp:
     description: "strengthPlus command"

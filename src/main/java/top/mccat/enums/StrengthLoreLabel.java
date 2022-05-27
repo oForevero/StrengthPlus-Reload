@@ -8,13 +8,15 @@ public enum StrengthLoreLabel {
     /**
      * 基础 Damage Label参数
      */
-    EssentialsSharpLabel("&b[&4伤害&b]", 1),
-    EssentialsPowerLabel("&b[&4弓力&b]", 2),
+    EssentialsSharpLabel("&b[&4锋利&b]", 1),
+    EssentialsPowerLabel("&b[&4矢锋&b]", 1),
     /**
      * 基础 Defence Label 参数
      */
-    EssentialsDefenceLabel("&b[&1防御&b]", 3),
-
+    EssentialsDefenceLabel("&b[&1防御&b]", 1),
+    HeartStealingLabel("&b[&c生命偷取]",3),
+    AbsoluteDamageLabel("&b[&e绝对伤害&b]", 3),
+    KillPowerLabel("&b[&d嗜血屠夫&b]",3)
     ;
     private final String loreLabel;
     private final Integer status;

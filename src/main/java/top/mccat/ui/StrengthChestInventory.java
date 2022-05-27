@@ -54,9 +54,9 @@ public class StrengthChestInventory implements Listener{
     private final ItemStack[] STRENGTH_UI = new ItemStack[]
             {strengthDividerGlass,strengthDividerGlass,strengthDividerGlass,ironBars,ironBars,ironBars,ironBars,strengthDividerGlass,displayBar,
             strengthDividerGlass,strengthDividerGlass,strengthDividerGlass,ironBars,air,air,ironBars,strengthDividerGlass,strengthDividerGlass,
-            strengthDividerGlass,air,strengthDividerGlass,ironBars,air,air,ironBars,strengthDividerGlass,air,
-            strengthDividerGlass,enchantingTable,strengthDividerGlass,ironBars,ironBars,ironBars,ironBars,strengthDividerGlass,extraTable,
-            strengthDividerGlass,strengthDividerGlass,strengthDividerGlass,ironBars,fire,fire,ironBars,strengthDividerGlass,strengthDividerGlass,
+            strengthDividerGlass,air,strengthDividerGlass,ironBars,ironBars,ironBars,ironBars,strengthDividerGlass,air,
+            strengthDividerGlass,enchantingTable,strengthDividerGlass,ironBars,fire,fire,ironBars,strengthDividerGlass,extraTable,
+            strengthDividerGlass,strengthDividerGlass,strengthDividerGlass,strengthDividerGlass,strengthDividerGlass,strengthDividerGlass,strengthDividerGlass,strengthDividerGlass,strengthDividerGlass,
             progressBar,progressBar,progressBar,progressBar,progressBar,progressBar,progressBar,strengthDividerGlass,startButton};
 
     public StrengthChestInventory() {
@@ -116,20 +116,14 @@ public class StrengthChestInventory implements Listener{
         logUtils.consoleLog(1,location);
         if (location >= 0 && location < 54){
             switch (clickEvent.getRawSlot()){
-                //强化石左上角槽位
+                //强化石左槽位
                 case 13:
                     break;
-                //强化石右上角槽位
+                //强化石右槽位
                 case 14:
                     break;
                 //强化武器放置槽位
                 case 19:
-                    break;
-                //强化石左下角槽位
-                case 22:
-                    break;
-                //强化石右下角槽位
-                case 23:
                     break;
                 //强化点击槽位
                 case 53:

@@ -1,6 +1,7 @@
 package top.mccat;
 
 import com.sun.istack.internal.NotNull;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -99,6 +100,15 @@ public class StrengthPlus extends JavaPlugin {
         //注册ui事件监听器
         PluginManager pluginManager = getServer().getPluginManager();
         pluginManager.registerEvents(strengthChestInventory,this);
+    }
+
+    /**
+     * 对经济api进行挂载
+     */
+    private void setupEconomy(){
+        if(getServer().getPluginManager().getPlugin("Vault") == null){
+
+        }
     }
 
     /**

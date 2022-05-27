@@ -1,4 +1,5 @@
 strengthPlus:
+  pluginName: '&e[&b&lStrengthPlus&e]'
   # 是否允许调试模式
   debug: true
   # 强化lore标题

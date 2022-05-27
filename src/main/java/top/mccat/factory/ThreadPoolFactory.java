@@ -19,15 +19,15 @@ public class ThreadPoolFactory {
     /**
      * 获取线程池对象，遵循 Nthreads=Ncpu（CPU核心数）*Ucpu（CPU使用率）*(1+w/c)（等待时间除以计算时间） 公式
      * 那么理论上，对于ui的多线程应当为 动态获取cpu核心数方法*CPU使用率（默认分配50%）*（1 + 5000 毫秒/ 理论计算时间：200*7（约等于1500）（进度条方格）+ 200*5）
-     * 即 假设当前cpu 4核 即 4*0.5*1+5000/2500 = 2*2 等于4，即核心数设置为该核心数，不考虑单核cpu问题，最大线程池即系统核心数+1
+     * 即 假设当前cpu 4核8线程 即 8*0.5+5000/2500 = 8 ，即开设线程数设置为该cpu核心的一倍，不考虑单核cpu问题，最大线程池即线程数数+1
      * @return 线程池对象
      */
     public static ThreadPoolExecutor getThreadPool(){
 //        通常来说，线程池的大小建议为cpu核心+1
-        int cpuCores = Runtime.getRuntime().availableProcessors();
+        int cpuThread = Runtime.getRuntime().availableProcessors();
 //        创建线程的工厂类
         ThreadFactory factory = new ThreadFactoryBuilder().setNameFormat("strength-plus-pool-%d").build();
-        ThreadPoolExecutor threadPool = new ThreadPoolExecutor(cpuCores>1?cpuCores:cpuCores+1,cpuCores+1,5L,
+        ThreadPoolExecutor threadPool = new ThreadPoolExecutor(cpuThread,cpuThread+1,5L,
                 TimeUnit.SECONDS,new LinkedBlockingDeque<>(3),factory,new ThreadPoolExecutor.DiscardOldestPolicy());
 //        允许自动回收
         threadPool.allowCoreThreadTimeOut(true);
