@@ -1,15 +1,16 @@
 package top.mccat;
 
 import com.sun.istack.internal.NotNull;
-import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import top.mccat.enums.Color;
 import top.mccat.enums.Permission;
 import top.mccat.factory.ConfigFactory;
+import top.mccat.factory.OtherPluginFactory;
 import top.mccat.handler.CommandHandler;
 import top.mccat.ui.StrengthChestInventory;
 import top.mccat.utils.ColorUtils;
@@ -59,6 +60,7 @@ public class StrengthPlus extends JavaPlugin {
     @Override
     public void onEnable() {
         enableListener();
+        setupOtherPlugin();
     }
 
     /**
@@ -105,9 +107,14 @@ public class StrengthPlus extends JavaPlugin {
     /**
      * 对经济api进行挂载
      */
-    private void setupEconomy(){
-        if(getServer().getPluginManager().getPlugin("Vault") == null){
+    private void setupOtherPlugin(){
+        if(getServer().getPluginManager().getPlugin("Vault") != null){
 
+        }
+        if(getServer().getPluginManager().getPlugin("PlaceHolderApi") != null){
+            if(OtherPluginFactory.BuildPlaceHolderExpansion()){
+                msgUtils.sendToConsole("PlaceHolderApi挂载成功！", Color.LightRed);
+            }
         }
     }
 

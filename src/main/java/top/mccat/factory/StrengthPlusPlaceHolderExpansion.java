@@ -1,9 +1,16 @@
 package top.mccat.factory;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.InventoryView;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.logging.Level;
 
 /**
  * @author Distance
@@ -13,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 public class StrengthPlusPlaceHolderExpansion extends PlaceholderExpansion {
     @Override
     public @NotNull String getIdentifier() {
-        return null;
+        return "strengthplus";
     }
 
     @Override
@@ -29,8 +36,33 @@ public class StrengthPlusPlaceHolderExpansion extends PlaceholderExpansion {
     @Override
     public @Nullable String onRequest(OfflinePlayer player, @NotNull String params) {
         switch (params){
+            case "item":
+                if(player == null){
+                    break;
+                }
+                if(!(player.getPlayer() instanceof Player)){
+                    break;
+                }
+                InventoryView openInventory = player.getPlayer().getOpenInventory();
+                if(openInventory == null){
+                    break;
+                }
+                ItemStack item = openInventory.getItem(19);
+
+                if(item == null || item.getType() == Material.AIR){
+                    return "";
+                }
+                ItemMeta meta = item.getItemMeta();
+                if(meta.hasDisplayName()){
+                    return meta.getDisplayName();
+                }else{
+                    return "装备";
+                }
+            case "player_name":
+                return player.getPlayer().getName();
             default:
-                return null;
+                return "undefined";
         }
+        return null;
     }
 }

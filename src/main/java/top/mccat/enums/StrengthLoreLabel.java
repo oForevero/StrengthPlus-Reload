@@ -14,8 +14,11 @@ public enum StrengthLoreLabel {
      * 基础 Defence Label 参数
      */
     EssentialsDefenceLabel("&b[&1防御&b]", 1),
+    /**
+     * 特殊 damage label参数
+     */
     HeartStealingLabel("&b[&c生命偷取]",3),
-    AbsoluteDamageLabel("&b[&e绝对伤害&b]", 3),
+    AbsoluteDamageLabel("&b[&e穿透伤害&b]", 3),
     KillPowerLabel("&b[&d嗜血屠夫&b]",3)
     ;
     private final String loreLabel;

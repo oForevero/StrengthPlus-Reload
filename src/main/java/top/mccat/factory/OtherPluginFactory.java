@@ -10,5 +10,21 @@ import net.milkbowl.vault.economy.Economy;
 public final class OtherPluginFactory {
     private static Economy economy;
     private static PlaceholderExpansion placeholderExpansion;
-    
+
+    /**
+     *
+     * @return
+     */
+    public static boolean BuildEconomy(){
+        return false;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public static boolean BuildPlaceHolderExpansion(){
+        placeholderExpansion = new StrengthPlusPlaceHolderExpansion();
+        return placeholderExpansion.register();
+    }
 }

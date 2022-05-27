@@ -1,5 +1,6 @@
 package top.mccat.ui;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -130,6 +131,7 @@ public class StrengthChestInventory implements Listener{
                     clickEvent.setCancelled(true);
                     playerInMenuMap.put(player,true);
                     strengthAnimation(inventory,1, player);
+                    logUtils.consoleLog(1, PlaceholderAPI.setPlaceholders(player,"%strengthplus_item%"));
                     break;
                 default:
                     clickEvent.setCancelled(true);
