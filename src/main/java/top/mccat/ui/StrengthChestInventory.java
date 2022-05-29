@@ -11,7 +11,9 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import top.mccat.domain.StrengthMenu;
 import top.mccat.domain.StrengthStone;
@@ -48,6 +50,7 @@ public class StrengthChestInventory implements Listener{
     private LogUtils logUtils;
     private MsgUtils msgUtils;
     private List<StrengthStone> stoneList;
+    private final int inventorySize = 54;
     Map<Player,Boolean> playerInMenuMap = new HashMap();
     /**
      * 整体ui数组，特殊按钮等用air itemstack填充，强化物品放置栏用
@@ -99,15 +102,16 @@ public class StrengthChestInventory implements Listener{
         if(!(clickEvent.getWhoClicked() instanceof Player)){
             return;
         }
+        InventoryView inventoryView = clickEvent.getWhoClicked().getOpenInventory();
         Inventory inventory = clickEvent.getInventory();
-//        如果不为54格或者不为箱子则直接return
-        if(inventory.getSize() != 54 || !inventory.getType().equals(InventoryType.CHEST)){
+//        如果其强化菜单名不为玩家设定的参数，且箱子大小不为54直接return
+        if(!inventoryView.getTitle().equals(strengthMenu.getMenuTitle()) || inventory.getSize() != inventorySize){
             return;
         }
 //        判断不对，仍需修改！！！！
 //        如果存在玩家正在强化则取消强化事件
         Player player = (Player) clickEvent.getWhoClicked();
-        if(playerInMenuMap.containsKey(player) && playerInMenuMap.get(player) == true){
+        if(playerInMenuMap.containsKey(player) && playerInMenuMap.get(player)){
             clickEvent.setCancelled(true);
             msgUtils.sendToPlayer(StrengthPlusMsg.StrengthNotFinish.getMsg(),player, Color.LightGreen);
             return;
@@ -115,7 +119,7 @@ public class StrengthChestInventory implements Listener{
 //        0-53为上层物品栏
         int location = clickEvent.getRawSlot();
         logUtils.consoleLog(1,location);
-        if (location >= 0 && location < 54){
+        if (location >= 0 && location < inventorySize){
             switch (clickEvent.getRawSlot()){
                 //强化石左槽位
                 case 13:
@@ -135,7 +139,6 @@ public class StrengthChestInventory implements Listener{
                     break;
                 default:
                     clickEvent.setCancelled(true);
-                    return;
             }
         }
     }
@@ -153,7 +156,7 @@ public class StrengthChestInventory implements Listener{
             return;
         }
 //        如果存在玩家正在强化则取消强化事件
-        playerInMenuMap.remove(closeEvent.getPlayer());
+        playerInMenuMap.replace((Player) closeEvent.getPlayer(),false);
     }
 
     public void setStrengthMenu(StrengthMenu strengthMenu) {
