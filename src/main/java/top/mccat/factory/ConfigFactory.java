@@ -76,7 +76,7 @@ public class ConfigFactory {
      */
     public void readConfigFile(){
         try {
-            msgUtils.sendToConsole("正在读取默认配置文件......",Color.LightGreen);
+            msgUtils.sendToConsole("==>正在读取默认配置文件......",Color.LightGreen);
             fileConfiguration.load(config);
             reloadEssentialsConfig();
             fileConfiguration.load(strengthLevelFile);
@@ -89,7 +89,7 @@ public class ConfigFactory {
             reloadStrengthExtra();
             fileConfiguration.load(strengthMenuFile);
             reloadStrengthMenu();
-            msgUtils.sendToConsole("配置文件读取成功！",Color.LightRed);
+            msgUtils.sendToConsole("==>配置文件读取成功！",Color.LightRed);
         } catch (IOException | InvalidConfigurationException e) {
             msgUtils.sendToConsole("配置文件IO读取错误，正在重新生成配置文件！", Color.LightRed);
             msgUtils.sendToConsole("正在写入默认配置文件......",Color.LightGreen);

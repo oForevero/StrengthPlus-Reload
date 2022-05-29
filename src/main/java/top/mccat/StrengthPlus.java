@@ -49,7 +49,6 @@ public class StrengthPlus extends JavaPlugin {
         //对配置文件进行读取
         configFactory = new ConfigFactory(this,logutils,msgUtils);
         configFactory.readConfigFile();
-        msgUtils.setEssentialsConfig(configFactory.getEssentialsConfig());
         initEssentialsModel();
 
     }
@@ -84,6 +83,7 @@ public class StrengthPlus extends JavaPlugin {
      */
     private void initEssentialsModel(){
         logutils.setDebugStatus(configFactory.isDebugStatus());
+        msgUtils.setEssentialsConfig(configFactory.getEssentialsConfig());
         //初始化强化界面ui
         strengthChestInventory = new StrengthChestInventory(configFactory.getStrengthMenu(),logutils,msgUtils);
         //初始化命令响应
@@ -113,7 +113,7 @@ public class StrengthPlus extends JavaPlugin {
         }
         if(getServer().getPluginManager().getPlugin("PlaceHolderApi") != null){
             if(OtherPluginFactory.BuildPlaceHolderExpansion()){
-                msgUtils.sendToConsole("PlaceHolderApi挂载成功！", Color.LightRed);
+                msgUtils.sendToConsole("==>PlaceHolderApi挂载成功！", Color.LightRed);
             }
         }
     }

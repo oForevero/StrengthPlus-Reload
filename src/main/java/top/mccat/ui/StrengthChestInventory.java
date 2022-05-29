@@ -93,7 +93,6 @@ public class StrengthChestInventory implements Listener{
      */
     @EventHandler(priority = EventPriority.HIGH)
     public void onInventoryClickEvent(InventoryClickEvent clickEvent){
-        logUtils.consoleLog(1,"on click event");
 //        如果被取消则直接return
         if(clickEvent.isCancelled()){
             return;
@@ -105,10 +104,10 @@ public class StrengthChestInventory implements Listener{
         InventoryView inventoryView = clickEvent.getWhoClicked().getOpenInventory();
         Inventory inventory = clickEvent.getInventory();
 //        如果其强化菜单名不为玩家设定的参数，且箱子大小不为54直接return
-        if(!inventoryView.getTitle().equals(strengthMenu.getMenuTitle()) || inventory.getSize() != inventorySize){
+        String parseTitle = ColorUtils.parseColorStr(strengthMenu.getMenuTitle());
+        if(!inventoryView.getTitle().equals(parseTitle) || inventory.getSize() != inventorySize){
             return;
         }
-//        判断不对，仍需修改！！！！
 //        如果存在玩家正在强化则取消强化事件
         Player player = (Player) clickEvent.getWhoClicked();
         if(playerInMenuMap.containsKey(player) && playerInMenuMap.get(player)){
@@ -118,6 +117,7 @@ public class StrengthChestInventory implements Listener{
         }
 //        0-53为上层物品栏
         int location = clickEvent.getRawSlot();
+        logUtils.consoleLog(1,"on click event");
         logUtils.consoleLog(1,location);
         if (location >= 0 && location < inventorySize){
             switch (clickEvent.getRawSlot()){

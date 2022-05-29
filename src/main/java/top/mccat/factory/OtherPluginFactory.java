@@ -20,8 +20,8 @@ public final class OtherPluginFactory {
     }
 
     /**
-     *
-     * @return
+     * 进行papi变量引用
+     * @return 是否成功
      */
     public static boolean BuildPlaceHolderExpansion(){
         placeholderExpansion = new StrengthPlusPlaceHolderExpansion();
