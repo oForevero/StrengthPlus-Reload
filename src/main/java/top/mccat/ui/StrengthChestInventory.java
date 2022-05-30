@@ -3,6 +3,7 @@ package top.mccat.ui;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -25,6 +26,7 @@ import top.mccat.utils.LogUtils;
 import top.mccat.utils.MsgUtils;
 
 import java.util.*;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
@@ -149,14 +151,28 @@ public class StrengthChestInventory implements Listener{
      */
     @EventHandler(priority = EventPriority.HIGH)
     public void onInventoryCloseEvent(InventoryCloseEvent closeEvent){
-        logUtils.consoleLog(1,"on click event");
         Inventory inventory = closeEvent.getInventory();
 //        如果不为54格或者不为箱子则直接return
         if(inventory.getSize() != 54 || !inventory.getType().equals(InventoryType.CHEST)){
             return;
         }
+        InventoryView view = closeEvent.getView();
+        if(!view.getTitle().equals(strengthMenu.getMenuTitle())){
+            return;
+        }
+        Player player = (Player)closeEvent.getPlayer();
+        logUtils.consoleLog(1,"on close event");
 //        如果存在玩家正在强化则取消强化事件
-        playerInMenuMap.replace((Player) closeEvent.getPlayer(),false);
+        playerInMenuMap.replace(player,false);
+        //获取左右强化石槽位
+        ItemStack leftStrengthStoneLocation = inventory.getItem(13);
+        ItemStack rightStrengthStoneLocation = inventory.getItem(14);
+        //获取强化物品和附加强化石
+        ItemStack strengthItem = inventory.getItem(19);
+        ItemStack stoneExtraLocation = inventory.getItem(29);
+        PlayerInventory playerInventory = player.getInventory();
+        BlockingQueue<Runnable> queue = threadPool.getQueue();
+
     }
 
     public void setStrengthMenu(StrengthMenu strengthMenu) {
@@ -164,7 +180,7 @@ public class StrengthChestInventory implements Listener{
     }
 
     /**
-     * 强化动画，使用线程池方法
+     * 强化动画及其使用，使用线程池方法
      * @param inventory 背包参数
      * @param level 武器等级
      */
