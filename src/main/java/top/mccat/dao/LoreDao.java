@@ -1,4 +1,4 @@
-package top.mccat.service;
+package top.mccat.dao;
 
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -8,7 +8,7 @@ import java.util.List;
  * @author Distance
  * @date 2022/5/24 14:36
  */
-public interface LoreService {
+public interface LoreDao {
     /**
      * 清除该ItemMeta中的所有lore
      * @param meta 物品对象

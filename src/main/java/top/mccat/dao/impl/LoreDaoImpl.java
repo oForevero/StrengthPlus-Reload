@@ -1,8 +1,8 @@
-package top.mccat.service.impl;
+package top.mccat.dao.impl;
 
 import org.bukkit.inventory.meta.ItemMeta;
+import top.mccat.dao.LoreDao;
 import top.mccat.domain.config.EssentialsConfig;
-import top.mccat.service.LoreService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,12 +11,12 @@ import java.util.List;
  * @author Distance
  * @date 2022/5/24 14:35
  */
-public class LoreServiceImpl implements LoreService {
+public class LoreDaoImpl implements LoreDao {
     private EssentialsConfig essentialsConfig;
     private String divider;
-    public LoreServiceImpl(){}
+    public LoreDaoImpl(){}
 
-    public LoreServiceImpl(EssentialsConfig essentialsConfig) {
+    public LoreDaoImpl(EssentialsConfig essentialsConfig) {
         this.essentialsConfig = essentialsConfig;
         divider = essentialsConfig.getDivider();
     }

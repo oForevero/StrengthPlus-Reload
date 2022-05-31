@@ -1,5 +1,8 @@
 package top.mccat.domain;
 
+import org.bukkit.Material;
+import org.bukkit.inventory.meta.ItemMeta;
+
 import java.util.List;
 
 /**
@@ -8,7 +11,7 @@ import java.util.List;
  * 强化石对象
  */
 public class StrengthStone {
-    private String stoneName;
+    private Material stoneMaterial;
     private List<String> lore;
     private boolean isSafe;
     private boolean isSuccess;
@@ -17,8 +20,8 @@ public class StrengthStone {
     public StrengthStone() {
     }
 
-    public StrengthStone(String stoneName, List<String> lore, boolean isSafe, boolean isSuccess, boolean isAdmin, Integer strengthExtra) {
-        this.stoneName = stoneName;
+    public StrengthStone(Material stoneName, List<String> lore, boolean isSafe, boolean isSuccess, boolean isAdmin, Integer strengthExtra) {
+        this.stoneMaterial = stoneName;
         this.lore = lore;
         this.isSafe = isSafe;
         this.isSuccess = isSuccess;
@@ -26,12 +29,12 @@ public class StrengthStone {
         this.strengthExtra = strengthExtra;
     }
 
-    public String getStoneName() {
-        return stoneName;
+    public Material getStoneMaterial() {
+        return stoneMaterial;
     }
 
-    public void setStoneName(String stoneName) {
-        this.stoneName = stoneName;
+    public void getStoneMaterial(String stoneName) {
+        this.stoneMaterial = Material.getMaterial(stoneName);
     }
 
     public List<String> getLore() {
@@ -77,7 +80,7 @@ public class StrengthStone {
     @Override
     public String toString() {
         return "StrengthStone{" +
-                "stoneName='" + stoneName + '\'' +
+                "stoneName='" + stoneMaterial + '\'' +
                 ", lore=" + lore +
                 ", isSafe=" + isSafe +
                 ", isSuccess=" + isSuccess +

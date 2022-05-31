@@ -27,6 +27,7 @@ import top.mccat.utils.MsgUtils;
 
 import java.util.*;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
@@ -136,7 +137,7 @@ public class StrengthChestInventory implements Listener{
                 case 53:
                     clickEvent.setCancelled(true);
                     playerInMenuMap.put(player,true);
-                    strengthAnimation(inventory,1, player);
+                    strengthAction(inventory,1, player);
                     logUtils.consoleLog(1, PlaceholderAPI.setPlaceholders(player,"%strengthplus_item%"));
                     break;
                 default:
@@ -162,17 +163,17 @@ public class StrengthChestInventory implements Listener{
         }
         Player player = (Player)closeEvent.getPlayer();
         logUtils.consoleLog(1,"on close event");
-//        如果存在玩家正在强化则取消强化事件
-        playerInMenuMap.replace(player,false);
+        PlayerInventory playerInventory = player.getInventory();
         //获取左右强化石槽位
-        ItemStack leftStrengthStoneLocation = inventory.getItem(13);
-        ItemStack rightStrengthStoneLocation = inventory.getItem(14);
+        ItemStack leftStrengthStone = inventory.getItem(13);
+        setPlayerItem(leftStrengthStone,playerInventory);
+        ItemStack rightStrengthStone = inventory.getItem(14);
+        setPlayerItem(rightStrengthStone,playerInventory);
         //获取强化物品和附加强化石
         ItemStack strengthItem = inventory.getItem(19);
-        ItemStack stoneExtraLocation = inventory.getItem(29);
-        PlayerInventory playerInventory = player.getInventory();
-        BlockingQueue<Runnable> queue = threadPool.getQueue();
-
+        setPlayerItem(strengthItem,playerInventory);
+        ItemStack stoneExtra = inventory.getItem(29);
+        setPlayerItem(stoneExtra,playerInventory);
     }
 
     public void setStrengthMenu(StrengthMenu strengthMenu) {
@@ -184,7 +185,7 @@ public class StrengthChestInventory implements Listener{
      * @param inventory 背包参数
      * @param level 武器等级
      */
-    private void strengthAnimation(Inventory inventory, int level, Player player){
+    private void strengthAction(Inventory inventory, int level, Player player){
         threadPool.execute(()->{
 //            循环开始和闪烁次数
             int i = 45;
@@ -207,6 +208,10 @@ public class StrengthChestInventory implements Listener{
                     logUtils.consoleLog(2,"警告，线程阻塞，可能是并发导致的问题！");
                     break;
                 }
+            }
+            //如果玩家关闭强化菜单则取消事件
+            if(!playerInMenuMap.get(player)){
+                return;
             }
             playerInMenuMap.put(player,false);
         });
@@ -269,5 +274,18 @@ public class StrengthChestInventory implements Listener{
         assert meta != null;
         meta.setLore(lore);
         stack.setItemMeta(meta);
+    }
+
+    /**
+     * 进行物品设置
+     * @param stack
+     * @param playerInventory
+     */
+    private void setPlayerItem(ItemStack stack, PlayerInventory playerInventory){
+        if(Material.AIR.equals(stack.getType())){
+            return;
+        }
+        int emptyIndex = playerInventory.firstEmpty();
+        playerInventory.setItem(emptyIndex,stack);
     }
 }

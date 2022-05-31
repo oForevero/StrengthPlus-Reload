@@ -24,7 +24,7 @@ public class ThreadPoolFactory {
      */
     public static ThreadPoolExecutor getThreadPool(){
 //        通常来说，线程池的大小建议为cpu核心+1
-        int cpuThread = Runtime.getRuntime().availableProcessors();
+        int cpuThread = Runtime.getRuntime().availableProcessors()*2;
 //        创建线程的工厂类
         ThreadFactory factory = new ThreadFactoryBuilder().setNameFormat("strength-plus-pool-%d").build();
         ThreadPoolExecutor threadPool = new ThreadPoolExecutor(cpuThread,cpuThread+1,5L,

@@ -1,6 +1,7 @@
 package top.mccat.service;
 
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
@@ -19,10 +20,10 @@ public interface StrengthService {
 
     /**
      * 强化石检索方法，查看玩家是否有强化石
-     * @param stack 物品堆
+     * @param chestInventory ui箱子
      * @return 第一个强化石物品堆对象
      */
-    ItemStack haveStone(ItemStack[] stack);
+    ItemStack haveStone(Inventory chestInventory);
 
     /**
      * 从玩家的物品栏中检视是否有强化石方法

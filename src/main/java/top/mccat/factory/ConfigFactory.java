@@ -195,7 +195,7 @@ public class ConfigFactory {
         for(String key : keySet){
             StrengthStone strengthStone = new StrengthStone();
             Map<String, Object> stoneExtra = stoneConfig.getValues(true);
-            strengthStone.setStoneName(stoneExtra.get(key+".name").toString());
+            strengthStone.getStoneMaterial(stoneExtra.get(key+".name").toString());
             strengthStone.setLore(stoneConfig.getStringList(key+".lore"));
             strengthStone.setSafe(getBooleanDefaultConfigExtra(stoneExtra,key+".isSafe"));
             strengthStone.setSuccess(getBooleanDefaultConfigExtra(stoneExtra,key+".isSuccess"));
