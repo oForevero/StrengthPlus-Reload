@@ -48,6 +48,7 @@ public class StrengthChestInventory implements Listener{
     private final ItemStack fire = new ItemStack(Material.SOUL_CAMPFIRE);
     private final ItemStack startButton = new ItemStack(Material.END_CRYSTAL);
     private final ItemStack extraTable = new ItemStack(Material.END_PORTAL_FRAME);
+    private final ItemStack closeMenu = new ItemStack(Material.BARRIER);
     private final ThreadPoolExecutor threadPool = ThreadPoolFactory.getThreadPool();
     private Thread uiSonThread;
     private LogUtils logUtils;
@@ -63,8 +64,8 @@ public class StrengthChestInventory implements Listener{
             strengthDividerGlass,strengthDividerGlass,strengthDividerGlass,ironBars,air,air,ironBars,strengthDividerGlass,strengthDividerGlass,
             strengthDividerGlass,air,strengthDividerGlass,ironBars,ironBars,ironBars,ironBars,strengthDividerGlass,air,
             strengthDividerGlass,enchantingTable,strengthDividerGlass,ironBars,fire,fire,ironBars,strengthDividerGlass,extraTable,
-            strengthDividerGlass,strengthDividerGlass,strengthDividerGlass,strengthDividerGlass,strengthDividerGlass,strengthDividerGlass,strengthDividerGlass,strengthDividerGlass,strengthDividerGlass,
-            progressBar,progressBar,progressBar,progressBar,progressBar,progressBar,progressBar,strengthDividerGlass,startButton};
+            strengthDividerGlass,strengthDividerGlass,strengthDividerGlass,strengthDividerGlass,strengthDividerGlass,strengthDividerGlass,strengthDividerGlass,startButton,strengthDividerGlass,
+            progressBar,progressBar,progressBar,progressBar,progressBar,progressBar,progressBar,strengthDividerGlass,closeMenu};
 
     public StrengthChestInventory() {
         setItemName(enchantingTable,"&b强化物品台");
@@ -75,6 +76,7 @@ public class StrengthChestInventory implements Listener{
         setItemName(startButton,"&c开始强化");
         setItemName(extraTable,"&b附加物品台");
         setItemName(displayBar, "&a强化信息");
+        setItemName(closeMenu, "&c关闭菜单");
     }
 
     public StrengthChestInventory(StrengthMenu strengthMenu, LogUtils logUtils, MsgUtils msgUtils) {
@@ -134,11 +136,30 @@ public class StrengthChestInventory implements Listener{
                 case 19:
                     break;
                 //强化点击槽位
-                case 53:
+                case 43:
                     clickEvent.setCancelled(true);
                     playerInMenuMap.put(player,true);
                     strengthAction(inventory,1, player);
                     logUtils.consoleLog(1, PlaceholderAPI.setPlaceholders(player,"%strengthplus_item%"));
+                    break;
+                //按键关闭本菜单
+                case 53:
+                    player.closeInventory();
+                    break;
+                //其他方式关闭本菜单
+                case -999:
+                    logUtils.consoleLog(1,"on close event");
+                    /*PlayerInventory playerInventory = player.getInventory();
+                    //获取左右强化石槽位
+                    ItemStack leftStrengthStone = inventory.getItem(13);
+                    setPlayerItem(leftStrengthStone,playerInventory);
+                    ItemStack rightStrengthStone = inventory.getItem(14);
+                    setPlayerItem(rightStrengthStone,playerInventory);
+                    //获取强化物品和附加强化石
+                    ItemStack strengthItem = inventory.getItem(19);
+                    setPlayerItem(strengthItem,playerInventory);
+                    ItemStack stoneExtra = inventory.getItem(29);
+                    setPlayerItem(stoneExtra,playerInventory);*/
                     break;
                 default:
                     clickEvent.setCancelled(true);
@@ -152,13 +173,13 @@ public class StrengthChestInventory implements Listener{
      */
     @EventHandler(priority = EventPriority.HIGH)
     public void onInventoryCloseEvent(InventoryCloseEvent closeEvent){
+        logUtils.consoleLog(1,"close event");
+        InventoryView inventoryView = closeEvent.getView();
         Inventory inventory = closeEvent.getInventory();
 //        如果不为54格或者不为箱子则直接return
-        if(inventory.getSize() != 54 || !inventory.getType().equals(InventoryType.CHEST)){
-            return;
-        }
-        InventoryView view = closeEvent.getView();
-        if(!view.getTitle().equals(strengthMenu.getMenuTitle())){
+        String parseTitle = ColorUtils.parseColorStr(strengthMenu.getMenuTitle());
+        logUtils.consoleLog(1,"menuTitle:"+parseTitle+" inventoryTitle："+inventoryView.getTitle()+" 是否相等："+parseTitle.equals(inventoryView.getTitle()));
+        if(!inventoryView.getTitle().equals(parseTitle) || inventory.getSize() != inventorySize){
             return;
         }
         Player player = (Player)closeEvent.getPlayer();
@@ -278,10 +299,13 @@ public class StrengthChestInventory implements Listener{
 
     /**
      * 进行物品设置
-     * @param stack
-     * @param playerInventory
+     * @param stack 物品堆
+     * @param playerInventory 玩家菜单
      */
     private void setPlayerItem(ItemStack stack, PlayerInventory playerInventory){
+        if(stack == null){
+            return;
+        }
         if(Material.AIR.equals(stack.getType())){
             return;
         }

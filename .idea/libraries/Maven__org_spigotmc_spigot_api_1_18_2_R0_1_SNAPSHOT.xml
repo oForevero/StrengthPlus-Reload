@@ -1,13 +1,13 @@
 <component name="libraryTable">
   <library name="Maven: org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT">
     <CLASSES>
-      <root url="jar://E:/maven/repository/org/spigotmc/spigot-api/1.18.2-R0.1-SNAPSHOT/spigot-api-1.18.2-R0.1-20220524.110132-46.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../apache-maven-3.8.1/repository/org/spigotmc/spigot-api/1.18.2-R0.1-SNAPSHOT/spigot-api-1.18.2-R0.1-20220524.110132-46.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://E:/maven/repository/org/spigotmc/spigot-api/1.18.2-R0.1-SNAPSHOT/spigot-api-1.18.2-R0.1-20220524.110132-46-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../apache-maven-3.8.1/repository/org/spigotmc/spigot-api/1.18.2-R0.1-SNAPSHOT/spigot-api-1.18.2-R0.1-20220524.110132-46-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://E:/maven/repository/org/spigotmc/spigot-api/1.18.2-R0.1-SNAPSHOT/spigot-api-1.18.2-R0.1-20220524.110132-46-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../apache-maven-3.8.1/repository/org/spigotmc/spigot-api/1.18.2-R0.1-SNAPSHOT/spigot-api-1.18.2-R0.1-20220524.110132-46-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
