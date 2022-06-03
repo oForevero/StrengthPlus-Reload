@@ -50,7 +50,6 @@ public class StrengthPlus extends JavaPlugin {
         configFactory = new ConfigFactory(this,logutils,msgUtils);
         configFactory.readConfigFile();
         initEssentialsModel();
-
     }
 
     /**

@@ -37,7 +37,11 @@ public class StrengthServiceImpl implements StrengthService {
 
     @Override
     public ItemStack haveStone(Inventory chestInventory) {
+//        如果左右强化槽都不为空则可以正常强化
         ItemStack leftStrengthStone = chestInventory.getItem(13);
+        if(leftStrengthStone == null){
+            return null;
+        }
         if(!ItemCheckerUtils.isAirMaterial(leftStrengthStone)){
             for (StrengthStone strengthStone : strengthStones){
                 if(sameLoreChecker(leftStrengthStone, strengthStone.getLore())){
@@ -46,6 +50,9 @@ public class StrengthServiceImpl implements StrengthService {
             }
         }
         ItemStack rightStrengthStone = chestInventory.getItem(14);
+        if(rightStrengthStone == null){
+            return null;
+        }
         if(!ItemCheckerUtils.isAirMaterial(rightStrengthStone)){
             for (StrengthStone strengthStone : strengthStones){
                 if(sameLoreChecker(rightStrengthStone, strengthStone.getLore())){
@@ -82,7 +89,7 @@ public class StrengthServiceImpl implements StrengthService {
      * 检测两个强化物品的lore是否相同
      * @param item 被检测物品
      * @param lore 物品lore
-     * @return
+     * @return 是否为两个相同物品的lore
      */
     private boolean sameLoreChecker(@NotNull ItemStack item, List<String> lore){
         ItemMeta itemMeta = item.getItemMeta();

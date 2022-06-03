@@ -113,18 +113,18 @@ public class StrengthChestInventory implements Listener{
         if(!inventoryView.getTitle().equals(parseTitle) || inventory.getSize() != inventorySize){
             return;
         }
-//        如果存在玩家正在强化则取消强化事件
-        Player player = (Player) clickEvent.getWhoClicked();
-        if(playerInMenuMap.containsKey(player) && playerInMenuMap.get(player)){
-            clickEvent.setCancelled(true);
-            msgUtils.sendToPlayer(StrengthPlusMsg.StrengthNotFinish.getMsg(),player, Color.LightGreen);
-            return;
-        }
 //        0-53为上层物品栏
         int location = clickEvent.getRawSlot();
         logUtils.consoleLog(1,"on click event");
         logUtils.consoleLog(1,location);
         if (location >= 0 && location < inventorySize){
+//            如果存在玩家正在强化则取消强化事件
+            Player player = (Player) clickEvent.getWhoClicked();
+            if(playerInMenuMap.containsKey(player) && playerInMenuMap.get(player)){
+                clickEvent.setCancelled(true);
+                msgUtils.sendToPlayer(StrengthPlusMsg.StrengthNotFinish.getMsg(),player, Color.LightGreen);
+                return;
+            }
             switch (clickEvent.getRawSlot()){
                 //强化石左槽位
                 case 13:
@@ -148,18 +148,6 @@ public class StrengthChestInventory implements Listener{
                     break;
                 //其他方式关闭本菜单
                 case -999:
-                    logUtils.consoleLog(1,"on close event");
-                    /*PlayerInventory playerInventory = player.getInventory();
-                    //获取左右强化石槽位
-                    ItemStack leftStrengthStone = inventory.getItem(13);
-                    setPlayerItem(leftStrengthStone,playerInventory);
-                    ItemStack rightStrengthStone = inventory.getItem(14);
-                    setPlayerItem(rightStrengthStone,playerInventory);
-                    //获取强化物品和附加强化石
-                    ItemStack strengthItem = inventory.getItem(19);
-                    setPlayerItem(strengthItem,playerInventory);
-                    ItemStack stoneExtra = inventory.getItem(29);
-                    setPlayerItem(stoneExtra,playerInventory);*/
                     break;
                 default:
                     clickEvent.setCancelled(true);
@@ -173,7 +161,6 @@ public class StrengthChestInventory implements Listener{
      */
     @EventHandler(priority = EventPriority.HIGH)
     public void onInventoryCloseEvent(InventoryCloseEvent closeEvent){
-        logUtils.consoleLog(1,"close event");
         InventoryView inventoryView = closeEvent.getView();
         Inventory inventory = closeEvent.getInventory();
 //        如果不为54格或者不为箱子则直接return
@@ -184,17 +171,31 @@ public class StrengthChestInventory implements Listener{
         }
         Player player = (Player)closeEvent.getPlayer();
         logUtils.consoleLog(1,"on close event");
+//        如果不存在则直接return
+        if(!playerInMenuMap.getOrDefault(player,false)){
+            return;
+        }
         PlayerInventory playerInventory = player.getInventory();
-        //获取左右强化石槽位
+//        获取左右强化石槽位
         ItemStack leftStrengthStone = inventory.getItem(13);
         setPlayerItem(leftStrengthStone,playerInventory);
         ItemStack rightStrengthStone = inventory.getItem(14);
         setPlayerItem(rightStrengthStone,playerInventory);
-        //获取强化物品和附加强化石
+//        获取强化物品和附加强化石
         ItemStack strengthItem = inventory.getItem(19);
         setPlayerItem(strengthItem,playerInventory);
-        ItemStack stoneExtra = inventory.getItem(29);
+        ItemStack stoneExtra = inventory.getItem(26);
         setPlayerItem(stoneExtra,playerInventory);
+        msgUtils.sendToPlayer("强化强行终止，请等待强化冷却后重新强化",player,Color.LightRed);
+        threadPool.execute(()->{
+            playerInMenuMap.put(player,true);
+            try {
+                Thread.sleep(8000);
+            } catch (InterruptedException e) {
+                logUtils.consoleLog(2,"警告，线程阻塞，可能是并发导致的问题！");
+            }
+            playerInMenuMap.put(player,false);
+        });
     }
 
     public void setStrengthMenu(StrengthMenu strengthMenu) {
@@ -256,7 +257,7 @@ public class StrengthChestInventory implements Listener{
             }
         }else {
             for (int i = 45; i < 52; i++){
-                inventory.setItem(i,modifyProgressBarStatus(time));
+                inventory.setItem(i,modifyProgressBarStatus(time, failProgressBar));
             }
         }
     }
@@ -271,6 +272,19 @@ public class StrengthChestInventory implements Listener{
             return successProgressBar;
         }
         return progressBar;
+    }
+
+    /**
+     * 切换动画状态
+     * @param time 次数
+     * @param otherBar 第二个bar
+     * @return ItemStack 对象
+     */
+    private ItemStack modifyProgressBarStatus(int time, ItemStack otherBar){
+        if(time%2==0){
+            return successProgressBar;
+        }
+        return otherBar;
     }
 
     /**

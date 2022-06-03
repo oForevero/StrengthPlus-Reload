@@ -27,17 +27,26 @@ public class ItemCheckerUtils {
      * @param item2 物品2
      * @return 是否相同
      */
-    private boolean sameLoreChecker(@NotNull ItemStack item1, @NotNull ItemStack item2){
+    public boolean sameLoreChecker(ItemStack item1, ItemStack item2){
         ItemMeta itemMeta1 = item1.getItemMeta();
+        if(itemMeta1 == null){
+            return false;
+        }
         if(ItemCheckerUtils.isAirMaterial(item1)){
             return false;
         }
         ItemMeta itemMeta2 = item2.getItemMeta();
+        if(itemMeta2 == null){
+            return false;
+        }
         if(ItemCheckerUtils.isAirMaterial(item2)){
             return false;
         }
         List<String> lore1 = itemMeta1.getLore();
         List<String> lore2 = itemMeta2.getLore();
+        if(lore1 == null || lore2 == null){
+            return false;
+        }
         return lore1.equals(lore2);
     }
 }
