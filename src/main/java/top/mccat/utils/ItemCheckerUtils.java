@@ -27,7 +27,7 @@ public class ItemCheckerUtils {
      * @param item2 物品2
      * @return 是否相同
      */
-    public boolean sameLoreChecker(ItemStack item1, ItemStack item2){
+    public static boolean sameLoreChecker(ItemStack item1, ItemStack item2){
         ItemMeta itemMeta1 = item1.getItemMeta();
         if(itemMeta1 == null){
             return false;
@@ -48,5 +48,13 @@ public class ItemCheckerUtils {
             return false;
         }
         return lore1.equals(lore2);
+    }
+
+    public static boolean hasStrengthLore(ItemStack stack){
+        ItemMeta itemMeta = stack.getItemMeta();
+        if (itemMeta.hasLore()){
+
+        }
+        return false;
     }
 }

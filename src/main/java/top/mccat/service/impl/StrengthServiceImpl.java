@@ -9,7 +9,9 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import top.mccat.dao.StrengthDao;
+import top.mccat.domain.StrengthLevel;
 import top.mccat.domain.StrengthStone;
+import top.mccat.domain.config.EssentialsConfig;
 import top.mccat.service.StrengthService;
 import top.mccat.utils.ItemCheckerUtils;
 
@@ -22,17 +24,29 @@ import java.util.List;
 public class StrengthServiceImpl implements StrengthService {
     private List<String> strengthItem;
     private List<StrengthStone> strengthStones;
+    private List<StrengthLevel> strengthLevels;
     private StrengthDao strengthDao;
+    private EssentialsConfig essentialsConfig;
 
-    public StrengthServiceImpl(List<String> strengthItem, List<StrengthStone> strengthStones, StrengthDao strengthDao) {
+    public StrengthServiceImpl(List<String> strengthItem, List<StrengthStone> strengthStones, List<StrengthLevel> strengthLevels, StrengthDao strengthDao, EssentialsConfig essentialsConfig) {
         this.strengthItem = strengthItem;
         this.strengthStones = strengthStones;
+        this.strengthLevels = strengthLevels;
         this.strengthDao = strengthDao;
+        this.essentialsConfig = essentialsConfig;
     }
 
     @Override
-    public boolean strengthItem(ItemStack stack) {
-        return false;
+    public ItemStack strengthItem(ItemStack stack) {
+        int level = getLevel(stack);
+        ItemMeta itemMeta;
+        if(level == 0){
+            itemMeta = strengthDao.strengthItem(stack, null);
+        }else {
+            itemMeta = strengthDao.strengthItem(stack, null);
+        }
+        stack.setItemMeta(itemMeta);
+        return stack;
     }
 
     @Override
@@ -98,6 +112,19 @@ public class StrengthServiceImpl implements StrengthService {
         }
         List<String> itemLore = itemMeta.getLore();
         return lore.equals(itemLore);
+    }
+
+    /**
+     * 获取强化等级
+     * @param stack
+     * @return
+     */
+    private int getLevel(ItemStack stack){
+        ItemMeta itemMeta = stack.getItemMeta();
+        if(!stack.hasItemMeta()){
+            return 0;
+        }
+        return itemMeta.hasLore() ? itemMeta.getLore().get(1).length() - essentialsConfig.getTitle().length() : 0;
     }
 
     public void setStrengthItem(List<String> strengthItem) {

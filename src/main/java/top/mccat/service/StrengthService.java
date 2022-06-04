@@ -11,12 +11,13 @@ import org.bukkit.inventory.PlayerInventory;
  * 强化接口，用于实现强化逻辑
  */
 public interface StrengthService {
+
     /**
      * 强化物品方法
-     * @param stack 物品堆
-     * @return 是否强化成功
+     * @param stack 强化物品
+     * @return 强化后的物品，通过strengthDao进行操作
      */
-    boolean strengthItem(ItemStack stack);
+    ItemStack strengthItem(ItemStack stack);
 
     /**
      * 强化石检索方法，查看玩家是否有强化石
